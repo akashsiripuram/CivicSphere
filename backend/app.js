@@ -17,6 +17,8 @@ app.use("/api/auth",userRouter);
 app.use("/api/project",projectRouter);
 app.use("/api/resources",resourceRouter);
 
+
+//listening on port
 app.listen(process.env.PORT,()=>{
     console.log(`Server is running on port `)
 })
