@@ -36,10 +36,10 @@ function Navbar() {
         <li>Contact</li>
         {!isAuthenticated ? (
           <div className="flex flex-row space-x-3">
-            <Link to={"/login"}>
+            <Link to={"/auth/login"}>
               <li className="cursor-pointer">Login</li>
             </Link>
-            <Link to={"/register"}>
+            <Link to={"/auth/register"}>
               <li className="cursor-pointer">Register</li>
             </Link>
           </div>

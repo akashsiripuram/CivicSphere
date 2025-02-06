@@ -1,38 +1,44 @@
-import { Route, Routes } from 'react-router-dom'
-import './App.css'
-import Layout from './components/layouts/layout'
-import {useDispatch, useSelector} from "react-redux";
-import Login from './pages/Auth/Login';
-import { useEffect } from 'react';
-import { checkAuth } from './components/redux/authSlice';
-import { Toaster, toast } from 'sonner';
-import Register from './pages/Auth/Register';
-import Home from './pages/Home/Home';
-
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import Layout from "./components/layouts/layout";
+import { useDispatch, useSelector } from "react-redux";
+import Login from "./pages/Auth/Login";
+import { useEffect } from "react";
+import { checkAuth } from "./components/redux/authSlice";
+import { Toaster } from "sonner";
+import Register from "./pages/Auth/Register";
+import Home from "./pages/Home/Home";
+import CheckAuth from "./components/common/CheckAuth";
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
   );
 
-
   const dispatch = useDispatch();
-  
 
   useEffect(() => {
     dispatch(checkAuth());
   }, [dispatch]);
   return (
     <>
-    <Toaster />
+      <Toaster />
       <Routes>
-        <Route path='/' element={<Layout/>}>
-        <Route path='' element={<Home/>}/>
-          <Route path='login' element={<Login/>}/>
-          <Route path='register' element={<Register/>}/>
+        <Route path="/" element={<Layout />}>
+          <Route path="" element={<Home />} />
+        </Route>
+        <Route
+          path="/auth"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated}>
+              <Layout />
+            </CheckAuth>
+          }>
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
         </Route>
       </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
