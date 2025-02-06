@@ -14,8 +14,22 @@ const userSchema=mongoose.Schema({
         type:String,
         required:true
     },
-
-
+    role:{
+        type:String,
+        enum:['citizen','community_leader','gov_official']
+    },
+    points:{
+        type:Number,
+        default:0
+    },
+    badges:{
+        type:Array,
+        default:[]
+    },
+    createdAt:{
+        type:Date,
+        default:Date.now
+    }
 });
 
 const User=mongoose.model("User",userSchema);
