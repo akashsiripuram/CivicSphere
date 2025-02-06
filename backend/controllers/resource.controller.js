@@ -1,5 +1,6 @@
 import Resource from "../models/Resource.js";
 
+//resouce adding
 export const addResource = async (req, res) => {
   const {
     name,
@@ -34,6 +35,8 @@ export const addResource = async (req, res) => {
     res.status(500).send("Server error");
   }
 };
+
+//fetch resources
 export const getResources = async (req, res) => {
   try {
     const resources = await Resource.find().sort({ createdAt: -1 });

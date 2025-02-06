@@ -1,29 +1,18 @@
 import express from "express";
-import mongoose from "mongoose";
 import "dotenv/config"
-import emailExistence from "email-existence"
 import projectRouter from "./routes/project.route.js";
 import userRouter from "./routes/user.route.js";
 import resourceRouter from "./routes/resource.route.js"
+import connectDb from "./utils/connectDb.js";
 
 const app = express();
 
 app.use(express.json());
 
-app.post("/api/exist",(req,res)=>{
-    emailExistence.check(`${req.body.email}`, function(error, response){
-       return res.json(response);
-    });
-})
-mongoose
-  .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/civicSphere")
-  .then(() => console.log("Connected to database"))
-  .catch((err) => console.error("Database connection failed:", err));
+//connecting to database
+connectDb();
 
-app.get("/",(req,res)=>{
-    res.send("Hello World!");
-})
-
+//Routes
 app.use("/api/auth",userRouter);
 app.use("/api/project",projectRouter);
 app.use("/api/resources",resourceRouter);
