@@ -1,6 +1,6 @@
 import express from "express";
 import { reportIssue, getAllIssues, getNearbyIssues, updateIssueStatus } from "../controllers/issue.controller.js";
-import verifyToken from "../utils/middleware.js";
+import {verifyToken} from "../utils/middleware.js";
 const router = express.Router();
 
 router.post("/report",verifyToken, reportIssue);
