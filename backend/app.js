@@ -4,6 +4,7 @@ import "dotenv/config"
 import emailExistence from "email-existence"
 import projectRouter from "./routes/project.route.js";
 import userRouter from "./routes/user.route.js";
+import resourceRouter from "./routes/resource.route.js"
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.get("/",(req,res)=>{
 
 app.use("/api/auth",userRouter);
 app.use("/api/project",projectRouter);
+app.use("/api/resources",resourceRouter);
 
 app.listen(process.env.PORT,()=>{
     console.log(`Server is running on port `)
