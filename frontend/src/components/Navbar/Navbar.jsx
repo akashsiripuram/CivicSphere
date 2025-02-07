@@ -5,8 +5,8 @@ import { logoutUser } from "../redux/authSlice";
 
 function Navbar() {
   const { isAuthenticated } = useSelector((state) => state.auth);
-  const dispatch=useDispatch();
-  const navigate=useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleLogout = async (e) => {
     e.preventDefault();
     await dispatch(logoutUser())
@@ -17,13 +17,13 @@ function Navbar() {
         } else {
           toast.error(
             data?.payload?.message || "Error."
-          ); 
+          );
         }
       })
       .catch((error) => {
         toast.error(
           error?.response?.data?.message ||
-            "Something went wrong. Please try again."
+          "Something went wrong. Please try again."
         ); // Handle unexpected errors
       });
   };

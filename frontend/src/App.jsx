@@ -10,6 +10,7 @@ import Register from "./pages/Auth/Register";
 import Home from "./pages/Home/Home";
 import CheckAuth from "./components/common/CheckAuth";
 import Project from "./pages/Projects/Project";
+import AuthPage from "./pages/Auth/AuthPage";
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
@@ -34,8 +35,9 @@ function App() {
               <Layout />
             </CheckAuth>
           }>
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
+
+          <Route path="login" element={<AuthPage />} />
+          <Route path="register" element={<AuthPage />} />
         </Route>
         {
           isAuthenticated&&(
