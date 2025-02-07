@@ -9,6 +9,7 @@ import { Toaster } from "sonner";
 import Register from "./pages/Auth/Register";
 import Home from "./pages/Home/Home";
 import CheckAuth from "./components/common/CheckAuth";
+import Project from "./pages/Projects/Project";
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
@@ -36,6 +37,14 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
         </Route>
+        {
+          isAuthenticated&&(
+            <Route path="/" element={<Layout/>}>
+              <Route path="projects" element={<Project />} />
+            </Route>
+          )
+        }
+        <Route path="*" element={<h1>404 Not Found</h1>} />
       </Routes>
     </>
   );

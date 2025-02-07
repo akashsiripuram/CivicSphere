@@ -6,7 +6,7 @@ import { Router } from "express";
 const app = express();
 const router=Router();
 
-router.get("/get",getAllProjects);
+router.get("/",getAllProjects);
 router.post("/add",verifyToken,addProject);
 
 export default router;

@@ -43,12 +43,22 @@ export const addProject = async (req, res) => {
 };
 
 //get all projects
-export const getAllProjects=async(req,res)=>{
-    try{
-        const projects=await Project.find().sort({createdAt: -1});
-        res.json(projects);
-    }catch(err){
-        console.error(err.message);
-        res.status(500).send("Server error");
-    }
-}
+export const getAllProjects = async (req, res) => {
+  try {
+    
+
+    const projects = await Project.find().sort({ createdAt: -1 });
+  
+    res.json({
+      success: true,
+      project:projects,
+      message: "Projects fetched successfully",
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
