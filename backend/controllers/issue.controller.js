@@ -15,9 +15,9 @@ export const reportIssue = async (req, res) => {
 export const getAllIssues = async (req, res) => {
     try {
       const issues = await Issues.find();
-      res.status(200).json(issues);
+      res.status(200).json({success:true,issues,message: "Issues returned successfully"});
     } catch (error) {
-      res.status(500).json({ error: "Failed to fetch issues", details: error.message });
+      res.status(500).json({ success:false,message: "Failed to fetch issues", details: error.message });
     }
 };
   

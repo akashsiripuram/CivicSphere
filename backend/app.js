@@ -29,7 +29,7 @@ connectDb();
 app.use("/api/auth",userRouter);
 app.use("/api/project",projectRouter);
 app.use("/api/resources",resourceRouter);
-app.use("api/issues",issueRouter);
+app.use("/api/issues",issueRouter);
 
 
 //listening on port
