@@ -6,5 +6,21 @@ const gamificationSchema=mongoose.Schema({
         ref: 'User',
         required: true
     },
+    points:{
+        type: Number,
+        default:0
+    },
+    badges:{
+        type: Array,
+        default:[]
+    },
+    activityLogs:{
+        type: Array,
+        default:[]
+    }
 
 })
+
+const Gamification=mongoose.model("Gamification",gamificationSchema);
+
+export default Gamification;

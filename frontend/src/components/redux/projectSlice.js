@@ -7,9 +7,16 @@ const initialState = {
 };
 
 export const fetchProjects = createAsyncThunk("/project", async () => {
-    const response = await axios.get("http://localhost:8080/api/project");
+    const response = await axios.get("http://localhost:8000/api/project");
     return response.data;
 });
+export const addProject=createAsyncThunk("/project/add", async (formData) => {
+    const response = await axios.post("http://localhost:8000/api/project/add", formData,{
+        withCredentials: true, // Ensure authentication
+      });
+    return response.data;
+}
+)
 
 const projectSlice=createSlice({
     name:"project",

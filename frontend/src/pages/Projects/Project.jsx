@@ -1,7 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProjects } from "../../components/redux/projectSlice";
-import { CalendarDays, Users, Target, Timer, Search,  Droplets, TreePine, Wind, Recycle } from "lucide-react";
+import { addProject, fetchProjects } from "../../components/redux/projectSlice";
+import { CalendarDays, Users, Target, Timer, Search, Droplets, TreePine, Wind, Recycle, Plus } from "lucide-react";
+import { Button } from "../../components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../../components/ui/dialog";
+import { Input } from "../../components/ui/input";
+import { Label } from "../../components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
+import { Textarea } from "../../components/ui/textarea";
+import { data } from 'react-router-dom';
 
 const projectImages = {
   water: "https://images.unsplash.com/photo-1536882240095-0379873feb4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
@@ -16,6 +23,139 @@ const categoryIcons = {
   forest: TreePine,
   waste: Recycle
 };
+
+function CreateProjectModal() {
+  const dispatch = useDispatch();
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    category: "",
+    fundingGoal: "",
+    startDate: "",
+    endDate: "",
+    images:""
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(addProject(formData))
+    .then((data)=>{
+      console.log(data);
+    })
+    console.log(formData);
+  };
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button className="bg-green-500 hover:bg-green-600 text-white">
+          <Plus className="w-4 h-4 mr-2" />
+          Create Project
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[525px] max-h-[80vh] overflow-auto">
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-bold text-green-800">Create New Project</DialogTitle>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="space-y-6">
+           <div className="space-y-2">
+            <Label htmlFor="image">Project Image</Label>
+            <Input
+              id="image"
+              value={formData.image}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              type="file"
+              className="w-full"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="title">Project Title</Label>
+            <Input
+              id="title"
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              placeholder="Enter project title"
+              className="w-full"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="description">Description</Label>
+            <Textarea
+              id="description"
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              placeholder="Describe your project"
+              className="w-full"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="category">Category</Label>
+            <Select
+              value={formData.category}
+              onValueChange={(value) => setFormData({ ...formData, category: value })}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="education">education</SelectItem>
+                <SelectItem value="healthcare">healthcare</SelectItem>
+                <SelectItem value="environment">environment</SelectItem>
+                <SelectItem value="politics">politics</SelectItem>
+                <SelectItem value="cleanliness">cleanliness</SelectItem>
+                <SelectItem value="transport">transport</SelectItem>
+                <SelectItem value="energy">energy</SelectItem>
+                <SelectItem value="disaster relief">disaster relief</SelectItem>
+                <SelectItem value="other">other</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="fundingGoal">Funding Goal ($)</Label>
+            <Input
+              id="fundingGoal"
+              type="number"
+              value={formData.fundingGoal}
+              onChange={(e) => setFormData({ ...formData, fundingGoal: e.target.value })}
+              placeholder="Enter funding goal"
+              className="w-full"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="startDate">Start Date</Label>
+              <Input
+                id="startDate"
+                type="date"
+                value={formData.startDate}
+                onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                className="w-full"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="endDate">End Date</Label>
+              <Input
+                id="endDate"
+                type="date"
+                value={formData.endDate}
+                onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
+                className="w-full"
+              />
+            </div>
+          </div>
+
+          <Button type="submit" className="w-full bg-green-500 hover:bg-green-600 text-white">
+            Create Project
+          </Button>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
 
 function Project() {
   const dispatch = useDispatch();
@@ -104,15 +244,18 @@ function Project() {
         </h1>
 
         <div className="mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
-          <div className="relative w-full md:w-96">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search projects..."
-              className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+          <div className="flex w-full md:w-auto gap-4 flex-1">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search projects..."
+                className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <CreateProjectModal />
           </div>
 
           <div className="flex gap-2 flex-wrap justify-center">

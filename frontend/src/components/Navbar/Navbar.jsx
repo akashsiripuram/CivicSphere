@@ -31,9 +31,15 @@ function Navbar() {
     <div className="bg-purple-300 p-4 flex flex-row justify-between">
       <h1>CivicSphere</h1>
       <ul className="flex flex-row justify-between space-x-3">
-        <li>Home</li>
-        <li>About</li>
-        <li>Contact</li>
+        <Link to={'/projects'}>
+        <li className="cursor-pointer">Projects</li>
+        </Link>
+        <Link to={'/issues'}>
+        <li className="cursor-pointer">Issues</li>
+        </Link>
+        <Link to={'/resources'}>
+        <li className="cursor-pointer">Resources</li>
+        </Link>
         {!isAuthenticated ? (
           <div className="flex flex-row space-x-3">
             <Link to={"/auth/login"}>

@@ -7,7 +7,7 @@ const initialState = {
 };
 
 export const fetchIssues = createAsyncThunk("/issues", async () => {
- const response = await axios.get("http://localhost:8080/api/issues/all");
+ const response = await axios.get("http://localhost:8000/api/issues/all");
  return response.data;
 });
 
