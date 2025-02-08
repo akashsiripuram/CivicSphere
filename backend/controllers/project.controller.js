@@ -85,3 +85,23 @@ export const joinProject=async(req,res)=>{
     });
   }
 }
+
+export const getProject=async (req,res)=>{
+  console.log("getProject");
+  const {projectId}=req.params;
+  try {
+    const project = await Project.findById(projectId);
+    console.log(project);
+    res.json({
+      success: true,
+      project: project,
+      message: "Project fetched successfully",
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+}

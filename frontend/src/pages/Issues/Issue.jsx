@@ -47,7 +47,7 @@ function Issues() {
                   <h2 className="text-xl font-semibold text-gray-800">{issue.issueType}</h2>
                   <p className="text-gray-600 mt-1">{issue.description}</p>
                   <div className="flex items-center text-sm text-gray-500 mt-2 space-x-3">
-                    <MapPin className="h-4 w-4" /> <span>{issue.location}</span>
+                    {/* <MapPin className="h-4 w-4" /> <span>{issue.location}</span> */}
                     <Clock className="h-4 w-4" /> <span>{new Date(issue.createdAt).toLocaleString()}</span>
                     {issue.status === "Resolved" && (
                       <CheckCircle className="h-4 w-4 text-green-500" />

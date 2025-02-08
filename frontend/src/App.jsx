@@ -11,10 +11,14 @@ import Project from "./pages/Projects/Project";
 import AuthPage from "./pages/Auth/AuthPage";
 import Issue from "./pages/Issues/Issue";
 import Resource from "./pages/resources/Resource";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import ProjectDetail from "./pages/ProjectDetail/ProjectDetail";
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
   );
+
+  
 
   const dispatch = useDispatch();
 
@@ -41,9 +45,11 @@ function App() {
         {
           isAuthenticated&&(
             <Route path="/" element={<Layout/>}>
+              <Route path="dashboard" element={<Dashboard />} />
               <Route path="projects" element={<Project />} />
               <Route path="issues" element={<Issue />} />
               <Route path="resources" element={<Resource />} />
+              <Route path="project/:id" element={<ProjectDetail />} />
             </Route>
           )
         }

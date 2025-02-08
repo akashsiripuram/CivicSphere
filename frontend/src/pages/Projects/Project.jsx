@@ -35,7 +35,7 @@ import {
   SelectValue,
 } from "../../components/ui/select";
 import { Textarea } from "../../components/ui/textarea";
-import { data } from "react-router-dom";
+import { data, Link } from "react-router-dom";
 import { toast } from "sonner";
 
 const projectImages = {
@@ -369,7 +369,7 @@ function Project() {
 
               <div className="p-6">
                 <h2 className="text-xl font-bold text-gray-800 mb-3">
-                  {project.title}
+                <Link to={`/project/${project._id}`}>{project.title}</Link>
                 </h2>
 
                 <p className="text-gray-600 mb-4 line-clamp-2">

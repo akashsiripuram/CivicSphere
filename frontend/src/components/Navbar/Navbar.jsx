@@ -95,6 +95,14 @@ function Navbar() {
                 </Link>
               </>
             ) : (
+              <div className="flex flex-row">
+                <Link to={'/dashboard'}
+                 
+                  className="flex items-center space-x-2 px-4 py-2 rounded-md hover:bg-emerald-50 transition-colors"
+                >
+                  
+                  <span className="rounded-full h-[35px] w-[35px] bg-white flex flex-row items-center justify-center">P</span>
+                </Link>
               <button
                 onClick={handleLogout}
                 className="flex items-center space-x-2 px-4 py-2 rounded-md text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors"
@@ -102,6 +110,7 @@ function Navbar() {
                 <LogOut className="h-4 w-4" />
                 <span>Logout</span>
               </button>
+              </div>
             )}
           </div>
         </div>

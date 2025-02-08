@@ -27,6 +27,12 @@ export const joinProject = createAsyncThunk("/project/join", async (projectId) =
     });
     return response.data;
 });
+export const getProject=createAsyncThunk("/project/get",async(req)=>{
+    const response=await axios.get(`http://localhost:8000/api/project/${req.params.id}`,{
+        withCredentials: true,
+    })
+    return response.data;
+})
 
 const projectSlice = createSlice({
     name: "project",
@@ -62,7 +68,18 @@ const projectSlice = createSlice({
             })
             .addCase(joinProject.rejected, (state) => {
                 state.isLoading = false;
-            });
+            })
+            .addCase(getProject.pending,(state)=>{
+                state.isLoading=true;
+            })
+            .addCase(getProject.fulfilled,(state,action)=>{
+                state.isLoading=false;
+                state.project=action.payload.project;
+            })
+            .addCase(getProject.rejected,(state)=>{
+                state.isLoading=false;
+                
+            })
     }
 });
 
