@@ -2,11 +2,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import { logoutUser } from "../redux/authSlice";
+import { Building2, TreePine, Users2, Lightbulb, LogIn, UserPlus, LogOut } from "lucide-react";
+import React from "react";
 
 function Navbar() {
   const { isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isProjectsOpen, setIsProjectsOpen] = React.useState(false);
+
   const handleLogout = async (e) => {
     e.preventDefault();
     await dispatch(logoutUser())
@@ -15,48 +19,93 @@ function Navbar() {
           toast.success(data.payload.message || "Logout successful!");
           navigate("/");
         } else {
-          toast.error(
-            data?.payload?.message || "Error."
-          );
+          toast.error(data?.payload?.message || "Error.");
         }
       })
       .catch((error) => {
         toast.error(
           error?.response?.data?.message ||
           "Something went wrong. Please try again."
-        ); // Handle unexpected errors
+        );
       });
   };
+
   return (
-    <div className="bg-purple-300 p-4 flex flex-row justify-between">
-      <h1>CivicSphere</h1>
-      <ul className="flex flex-row justify-between space-x-3">
-        <Link to={'/projects'}>
-        <li className="cursor-pointer">Projects</li>
-        </Link>
-        <Link to={'/issues'}>
-        <li className="cursor-pointer">Issues</li>
-        </Link>
-        <Link to={'/resources'}>
-        <li className="cursor-pointer">Resources</li>
-        </Link>
-        {!isAuthenticated ? (
-          <div className="flex flex-row space-x-3">
-            <Link to={"/auth/login"}>
-              <li className="cursor-pointer">Login</li>
-            </Link>
-            <Link to={"/auth/register"}>
-              <li className="cursor-pointer">Register</li>
-            </Link>
+    <div className=" bg-gradient-to-r from-emerald-50 to-teal-50">
+      <div className="container mx-auto px-4">
+        <div className="flex h-16 items-center justify-between">
+          <Link to={'/'} className="flex items-center space-x-2">
+            <Building2 className="h-6 w-6 text-emerald-600" />
+            <span className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+              CivicSphere
+            </span>
+          </Link>
+
+          <nav className="flex items-center">
+            <ul className="flex space-x-2">
+              <li className="relative">
+                <Link to={'/projects'}
+                  className="flex items-center space-x-2 px-4 py-2 rounded-md hover:bg-emerald-50 transition-colors"
+                  
+                >
+                  
+                  <TreePine className="h-4 w-4" />
+                  <span>Projects</span>
+                  </Link>
+           
+                
+              </li>
+              <li>
+                <Link
+                  to="/issues"
+                  className="flex items-center space-x-2 px-4 py-2 rounded-md hover:bg-emerald-50 transition-colors"
+                >
+                  <Users2 className="h-4 w-4" />
+                  <span>Issues</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/resources"
+                  className="flex items-center space-x-2 px-4 py-2 rounded-md hover:bg-emerald-50 transition-colors"
+                >
+                  <Lightbulb className="h-4 w-4" />
+                  <span>Resources</span>
+                </Link>
+              </li>
+            </ul>
+          </nav>
+
+          <div className="flex items-center space-x-4">
+            {!isAuthenticated ? (
+              <>
+                <Link
+                  to="/auth/login"
+                  className="flex items-center space-x-2 px-4 py-2 rounded-md hover:bg-emerald-50 transition-colors"
+                >
+                  <LogIn className="h-4 w-4" />
+                  <span>Login</span>
+                </Link>
+                <Link
+                  to="/auth/register"
+                  className="flex items-center space-x-2 px-4 py-2 rounded-md bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
+                >
+                  <UserPlus className="h-4 w-4" />
+                  <span>Register</span>
+                </Link>
+              </>
+            ) : (
+              <button
+                onClick={handleLogout}
+                className="flex items-center space-x-2 px-4 py-2 rounded-md text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors"
+              >
+                <LogOut className="h-4 w-4" />
+                <span>Logout</span>
+              </button>
+            )}
           </div>
-        ) : (
-          <li
-            className="cursor-pointer"
-            onClick={handleLogout}>
-            Logout
-          </li>
-        )}
-      </ul>
+        </div>
+      </div>
     </div>
   );
 }

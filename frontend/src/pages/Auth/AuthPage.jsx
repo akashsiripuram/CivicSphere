@@ -65,7 +65,7 @@ const AuthPage = () => {
 
 
     return (
-        <div id="container" className="container">
+        <div id="container" className="container-auth ">
             <div className="row">
                 {/* Sign Up Form */}
                 <div className="col align-items-center flex-col sign-up">

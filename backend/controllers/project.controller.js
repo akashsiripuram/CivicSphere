@@ -1,4 +1,6 @@
 import Project from "../models/Project.js";
+import sendMail from "../utils/sendEmail.js";
+import User from "../models/User.js";
 
 //add project
 export const addProject = async (req, res) => {
@@ -58,3 +60,28 @@ export const getAllProjects = async (req, res) => {
     });
   }
 };
+
+export const joinProject=async(req,res)=>{
+  console.log("joinProject");
+  const {projectId}=req.params;
+  try {
+    const currUser=await User.findById(req.user.id);
+    const updatedProject = await Project.findByIdAndUpdate(
+      projectId,
+      { $push: { members: req.user.id } },
+      { new: true }
+    );
+    sendMail(currUser.email);
+    res.json({
+      success: true,
+      project: updatedProject,
+      message: "Project joined successfully",
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+}

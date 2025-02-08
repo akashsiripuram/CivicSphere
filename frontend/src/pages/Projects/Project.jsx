@@ -1,27 +1,59 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addProject, fetchProjects } from "../../components/redux/projectSlice";
-import { CalendarDays, Users, Target, Timer, Search, Droplets, TreePine, Wind, Recycle, Plus } from "lucide-react";
+import {
+  addProject,
+  fetchProjects,
+  joinProject,
+} from "../../components/redux/projectSlice";
+import {
+  CalendarDays,
+  Users,
+  Target,
+  Timer,
+  Search,
+  Droplets,
+  TreePine,
+  Wind,
+  Recycle,
+  Plus,
+} from "lucide-react";
 import { Button } from "../../components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../../components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../../components/ui/dialog";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../components/ui/select";
 import { Textarea } from "../../components/ui/textarea";
-import { data } from 'react-router-dom';
+import { data } from "react-router-dom";
+import { toast } from "sonner";
 
 const projectImages = {
-  water: "https://images.unsplash.com/photo-1536882240095-0379873feb4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-  solar: "https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-  forest: "https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-  waste: "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+  water:
+    "https://images.unsplash.com/photo-1536882240095-0379873feb4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+  solar:
+    "https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+  forest:
+    "https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+  waste:
+    "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
 };
 
 const categoryIcons = {
   water: Droplets,
   solar: Wind,
   forest: TreePine,
-  waste: Recycle
+  waste: Recycle,
 };
 
 function CreateProjectModal() {
@@ -33,15 +65,14 @@ function CreateProjectModal() {
     fundingGoal: "",
     startDate: "",
     endDate: "",
-    images:""
+    images: "",
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addProject(formData))
-    .then((data)=>{
+    dispatch(addProject(formData)).then((data) => {
       console.log(data);
-    })
+    });
     console.log(formData);
   };
 
@@ -55,15 +86,19 @@ function CreateProjectModal() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[525px] max-h-[80vh] overflow-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-green-800">Create New Project</DialogTitle>
+          <DialogTitle className="text-2xl font-bold text-green-800">
+            Create New Project
+          </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-6">
-           <div className="space-y-2">
+          <div className="space-y-2">
             <Label htmlFor="image">Project Image</Label>
             <Input
               id="image"
               value={formData.image}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
               type="file"
               className="w-full"
             />
@@ -73,7 +108,9 @@ function CreateProjectModal() {
             <Input
               id="title"
               value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
               placeholder="Enter project title"
               className="w-full"
             />
@@ -84,7 +121,9 @@ function CreateProjectModal() {
             <Textarea
               id="description"
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
               placeholder="Describe your project"
               className="w-full"
             />
@@ -94,8 +133,9 @@ function CreateProjectModal() {
             <Label htmlFor="category">Category</Label>
             <Select
               value={formData.category}
-              onValueChange={(value) => setFormData({ ...formData, category: value })}
-            >
+              onValueChange={(value) =>
+                setFormData({ ...formData, category: value })
+              }>
               <SelectTrigger>
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
@@ -119,7 +159,9 @@ function CreateProjectModal() {
               id="fundingGoal"
               type="number"
               value={formData.fundingGoal}
-              onChange={(e) => setFormData({ ...formData, fundingGoal: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, fundingGoal: e.target.value })
+              }
               placeholder="Enter funding goal"
               className="w-full"
             />
@@ -132,7 +174,9 @@ function CreateProjectModal() {
                 id="startDate"
                 type="date"
                 value={formData.startDate}
-                onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, startDate: e.target.value })
+                }
                 className="w-full"
               />
             </div>
@@ -142,13 +186,17 @@ function CreateProjectModal() {
                 id="endDate"
                 type="date"
                 value={formData.endDate}
-                onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, endDate: e.target.value })
+                }
                 className="w-full"
               />
             </div>
           </div>
 
-          <Button type="submit" className="w-full bg-green-500 hover:bg-green-600 text-white">
+          <Button
+            type="submit"
+            className="w-full bg-green-500 hover:bg-green-600 text-white">
             Create Project
           </Button>
         </form>
@@ -162,61 +210,83 @@ function Project() {
   const { isLoading, projects } = useSelector((state) => state.project);
   const [filter, setFilter] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+
+  const handleJoin = (projectId,project) => {
+    
+    if (!user || project.members.includes(user.id)) {
+      toast.info("You have already joined this project");
+      return;
+    }
+  
+    dispatch(joinProject(projectId))
+      .then(() => toast.success("Joined project"))
+      .catch(() => toast.error("Failed to join project"));
+  };
+  
 
   useEffect(() => {
     dispatch(fetchProjects());
   }, []);
 
   // Mock additional projects for demonstration
-  const allProjects = projects ? [
-    ...projects,
-    {
-      _id: "2",
-      title: "Solar Power Initiative",
-      description: "Bringing renewable solar energy to urban communities.",
-      category: "solar",
-      fundingGoal: 75000,
-      members: ["1", "2", "3"],
-      startDate: "2025-03-01T00:00:00.000Z",
-      endDate: "2025-08-01T00:00:00.000Z",
-      status: "active"
-    },
-    {
-      _id: "3",
-      title: "Urban Forest Project",
-      description: "Creating green spaces in city centers to improve air quality.",
-      category: "forest",
-      fundingGoal: 30000,
-      members: ["1", "2"],
-      startDate: "2025-04-01T00:00:00.000Z",
-      endDate: "2025-07-01T00:00:00.000Z",
-      status: "active"
-    },
-    {
-      _id: "4",
-      title: "Zero Waste Program",
-      description: "Implementing comprehensive recycling and waste reduction systems.",
-      category: "waste",
-      fundingGoal: 45000,
-      members: ["1", "2", "3", "4"],
-      startDate: "2025-05-01T00:00:00.000Z",
-      endDate: "2025-09-01T00:00:00.000Z",
-      status: "active"
-    }
-  ] : [];
+  const allProjects = projects
+    ? [
+        ...projects,
+        {
+          _id: "2",
+          title: "Solar Power Initiative",
+          description: "Bringing renewable solar energy to urban communities.",
+          category: "solar",
+          fundingGoal: 75000,
+          members: ["1", "2", "3"],
+          startDate: "2025-03-01T00:00:00.000Z",
+          endDate: "2025-08-01T00:00:00.000Z",
+          status: "active",
+        },
+        {
+          _id: "3",
+          title: "Urban Forest Project",
+          description:
+            "Creating green spaces in city centers to improve air quality.",
+          category: "forest",
+          fundingGoal: 30000,
+          members: ["1", "2"],
+          startDate: "2025-04-01T00:00:00.000Z",
+          endDate: "2025-07-01T00:00:00.000Z",
+          status: "active",
+        },
+        {
+          _id: "4",
+          title: "Zero Waste Program",
+          description:
+            "Implementing comprehensive recycling and waste reduction systems.",
+          category: "waste",
+          fundingGoal: 45000,
+          members: ["1", "2", "3", "4"],
+          startDate: "2025-05-01T00:00:00.000Z",
+          endDate: "2025-09-01T00:00:00.000Z",
+          status: "active",
+        },
+      ]
+    : [];
 
-  const filteredProjects = allProjects.filter(project => {
+  const filteredProjects = allProjects.filter((project) => {
     const matchesFilter = filter === "all" || project.category === filter;
-    const matchesSearch = project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         project.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch =
+      project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      project.description.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 
   const getProgressColor = (status) => {
     switch (status) {
-      case "active": return "bg-green-500";
-      case "completed": return "bg-blue-500";
-      default: return "bg-yellow-500";
+      case "active":
+        return "bg-green-500";
+      case "completed":
+        return "bg-blue-500";
+      default:
+        return "bg-yellow-500";
     }
   };
 
@@ -235,6 +305,7 @@ function Project() {
       </div>
     );
   }
+  console.log(projects)
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-blue-50">
@@ -267,20 +338,18 @@ function Project() {
                   filter === category
                     ? "bg-green-500 text-white"
                     : "bg-white text-gray-600 hover:bg-green-100"
-                }`}
-              >
+                }`}>
                 {category.charAt(0).toUpperCase() + category.slice(1)}
               </button>
             ))}
           </div>
         </div>
-        
+
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {filteredProjects.map((project) => (
-            <div 
+            <div
               key={project._id}
-              className="bg-white rounded-xl shadow-xl overflow-hidden transform hover:scale-[1.02] transition-all duration-300"
-            >
+              className="bg-white rounded-xl shadow-xl overflow-hidden transform hover:scale-[1.02] transition-all duration-300">
               <div className="relative h-48">
                 <img
                   src={projectImages[project.category] || projectImages.water}
@@ -289,7 +358,10 @@ function Project() {
                 />
                 <div className="absolute top-4 right-4">
                   <span className="px-4 py-2 bg-green-500 text-white rounded-full text-sm font-semibold flex items-center gap-2">
-                    {categoryIcons[project.category] && React.createElement(categoryIcons[project.category], { size: 16 })}
+                    {categoryIcons[project.category] &&
+                      React.createElement(categoryIcons[project.category], {
+                        size: 16,
+                      })}
                     {project.category}
                   </span>
                 </div>
@@ -299,7 +371,7 @@ function Project() {
                 <h2 className="text-xl font-bold text-gray-800 mb-3">
                   {project.title}
                 </h2>
-                
+
                 <p className="text-gray-600 mb-4 line-clamp-2">
                   {project.description}
                 </p>
@@ -315,11 +387,15 @@ function Project() {
                   </div>
                   <div className="flex items-center gap-2 text-gray-600">
                     <CalendarDays className="w-4 h-4 text-purple-500" />
-                    <span>{new Date(project.startDate).toLocaleDateString()}</span>
+                    <span>
+                      {new Date(project.startDate).toLocaleDateString()}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2 text-gray-600">
                     <Timer className="w-4 h-4 text-orange-500" />
-                    <span>{new Date(project.endDate).toLocaleDateString()}</span>
+                    <span>
+                      {new Date(project.endDate).toLocaleDateString()}
+                    </span>
                   </div>
                 </div>
 
@@ -339,15 +415,25 @@ function Project() {
                   <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-green-100">
                     <div
                       style={{ width: `${Math.floor(Math.random() * 100)}%` }}
-                      className={`shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center transition-all duration-500 ${getProgressColor(project.status)}`}
-                    ></div>
+                      className={`shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center transition-all duration-500 ${getProgressColor(
+                        project.status
+                      )}`}></div>
                   </div>
                 </div>
+                <div className="flex flex-row justify-between space-x-3">
+                  <button
+                    className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                    onClick={() => handleJoin(project._id,project)}>
+                    {project.members.find((member) => member === user.id) ? "Joined" : "Join Project"}
 
-                <button className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
-                  Support Project
-                  <Target className="w-4 h-4" />
-                </button>
+                    <Target className="w-4 h-4" />
+                  </button>
+
+                  <button className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
+                    Support Project
+                    <Target className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
             </div>
           ))}
@@ -356,7 +442,9 @@ function Project() {
         {filteredProjects.length === 0 && (
           <div className="text-center py-12">
             <TreePine className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-            <p className="text-gray-600">No projects found matching your criteria.</p>
+            <p className="text-gray-600">
+              No projects found matching your criteria.
+            </p>
           </div>
         )}
       </div>
