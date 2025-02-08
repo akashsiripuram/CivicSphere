@@ -2,15 +2,14 @@ import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Layout from "./components/layouts/layout";
 import { useDispatch, useSelector } from "react-redux";
-import Login from "./pages/Auth/Login";
 import { useEffect } from "react";
 import { checkAuth } from "./components/redux/authSlice";
 import { Toaster } from "sonner";
-import Register from "./pages/Auth/Register";
 import Home from "./pages/Home/Home";
 import CheckAuth from "./components/common/CheckAuth";
 import Project from "./pages/Projects/Project";
 import AuthPage from "./pages/Auth/AuthPage";
+import Issue from "./pages/Issues/Issue";
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
@@ -43,6 +42,7 @@ function App() {
           isAuthenticated&&(
             <Route path="/" element={<Layout/>}>
               <Route path="projects" element={<Project />} />
+              <Route path="issues" element={<Issue />} />
             </Route>
           )
         }

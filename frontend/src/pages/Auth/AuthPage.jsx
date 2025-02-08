@@ -156,7 +156,7 @@ const AuthPage = () => {
                                 <b>Forgot password?</b>
                             </p>
                             <p>
-                                <span>Don't have an account? </span>
+                                <span>Don&apos;t have an account? </span>
                                 <b onClick={toggle} className="pointer">
                                     Sign up here
                                 </b>
