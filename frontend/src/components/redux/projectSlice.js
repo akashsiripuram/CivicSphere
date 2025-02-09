@@ -3,7 +3,8 @@ import axios from "axios";
 
 const initialState = {
     isLoading: false,
-    projects: []
+    projects: [],
+    project:null
 };
 
 // Fetch projects
@@ -27,8 +28,8 @@ export const joinProject = createAsyncThunk("/project/join", async (projectId) =
     });
     return response.data;
 });
-export const getProject=createAsyncThunk("/project/get",async(req)=>{
-    const response=await axios.get(`http://localhost:8000/api/project/${req.params.id}`,{
+export const getProject=createAsyncThunk("/project/get",async(projectId)=>{
+    const response=await axios.get(`http://localhost:8000/api/project/${projectId}`,{
         withCredentials: true,
     })
     return response.data;
