@@ -82,6 +82,15 @@ function Navbar() {
                   <span>Emergencies</span>
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/regional-planning"
+                  className="flex items-center space-x-2 px-4 py-2 rounded-md hover:bg-emerald-50 transition-colors"
+                >
+                  <Lightbulb className="h-4 w-4" />
+                  <span>Regional Planning</span>
+                </Link>
+              </li>
             </ul>
           </nav>
 
