@@ -60,6 +60,11 @@ const ProjectSchema = mongoose.Schema({
       lng: { type: Number, default: null }  
     }
   },
+  level:{
+    type: String,
+    enum:['small','medium','large'],
+    default:'medium'
+  },
   createdAt: {
     type: Date,
     default: Date.now,
