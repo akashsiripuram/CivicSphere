@@ -68,6 +68,7 @@ function CreateProjectModal() {
     startDate: "",
     endDate: "",
     images: "",
+    city:""
   });
   
 
@@ -195,6 +196,19 @@ function CreateProjectModal() {
                 setFormData({ ...formData, fundingGoal: e.target.value })
               }
               placeholder="Enter funding goal"
+              className="w-full"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="fundingGoal">City</Label>
+            <Input
+              id="city"
+              type="text"
+              value={formData.city}
+              onChange={(e) =>
+                setFormData({ ...formData,city: e.target.value })
+              }
+              placeholder="Enter City"
               className="w-full"
             />
           </div>
