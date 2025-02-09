@@ -1,7 +1,7 @@
 import { getProject } from "../../components/redux/projectSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams,Link } from "react-router-dom";
 import Map, { Marker } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { getUser } from "../../components/redux/authSlice";
@@ -31,7 +31,15 @@ console.log(project);
             <div className="flex h-screen p-6 bg-gray-100">
                 {/* Left Side: Project Details */}
                 <div className="w-2/3 bg-white p-6 shadow-md rounded-lg flex flex-col">
-                    <h2 className="text-4xl font-bold text-gray-900 mb-4">{project.title}</h2>
+                <h2 className="text-4xl font-extrabold text-gray-900 mb-4 flex justify-between items-center">
+    {project.title}
+    <button className="bg-green-600 hover:bg-green-700 text-white text-lg font-semibold px-6 py-3 rounded-xl shadow-lg transition-all duration-300">
+       <Link to={`/donations`}>Contribute</Link>
+    </button>
+</h2>
+
+
+
                     <p className="text-lg text-gray-700 italic border-l-4 border-emerald-500 pl-4">{project.description}</p>
 
                     {/* Image */}
