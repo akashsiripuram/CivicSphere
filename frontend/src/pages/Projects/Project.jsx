@@ -457,9 +457,9 @@ function Project() {
                     <Target className="w-4 h-4" />
                   </button>
 
-                  <button className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
-                    Support Project
-                    <Target className="w-4 h-4" />
+                  <button className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"  >
+                  <Link to={`/project/${project._id}`}> Support Project</Link> 
+                    <Target className="w-4 h-4" /> 
                   </button>
                 </div>
               </div>
