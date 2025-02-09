@@ -7,13 +7,8 @@ const EmergencySchema=mongoose.Schema({
         enum:['Fire','Earthquake','Natural Disaster']
     },
     location:{
-        lat: { type: Number, required: true },
-        lon: { type: Number, required: true },
-        city: { type: String, required: true },
-        state: { type: String, required: true },
-        country: { type: String, required: true },
-        postalCode: { type: String },
-        address: { type: String }
+        type: { type: String, default: "Point" },
+        coordinates: { type: [Number], required: true } 
     },
     reportedBy:{
         type:mongoose.Schema.ObjectId,

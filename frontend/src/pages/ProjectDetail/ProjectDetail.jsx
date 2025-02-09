@@ -5,20 +5,26 @@ import { useParams } from "react-router-dom";
 
 function ProjectDetail() {
     const projectId=useParams();
-    const {projects,isLoading}=useSelector((state)=>state.project);
+    const {project,isLoading}=useSelector((state)=>state.project);
     const dispatch=useDispatch();
-
+console.log("something",projectId);
     useEffect(()=>{
-        dispatch(getProject(projectId))
+        dispatch(getProject(projectId.id))
 
     },[]);
-    console.log(projects)
+    console.log("Hello",project)
     
     return ( 
         isLoading? <h1>Loading...</h1>:
         <div>
-            <h1>{projects.title}</h1>
-            <p>{projects.description}</p>
+            <div>{project.title}</div>
+            <div>{project.description}</div>
+            <div>{project.fundingGoal}</div>
+            <div>{project.members}</div>
+            <div>{new Date(project.startDate).toLocaleDateString()}</div>
+            <div>{new Date(project.endDate).toLocaleDateString()}</div>
+            <div>{project.category}</div>
+            
         </div>
 
      );
