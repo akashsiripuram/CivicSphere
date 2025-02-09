@@ -35,13 +35,13 @@ app.post("/api/v1/upload", upload.single("file"), async (req, res) => {
   return res.status(200).json(fileUrl);
 });
 //Routes
-app.use("/api/auth",userRouter);
-app.use("/api/project",projectRouter);
-app.use("/api/resources",resourceRouter);
-app.use("/api/issues",issueRouter);
+app.use("/api/auth", userRouter);
+app.use("/api/project", projectRouter);
+app.use("/api/resources", resourceRouter);
+app.use("/api/issues", issueRouter);
 
 
 //listening on port
-app.listen(process.env.PORT,()=>{
-    console.log(`Server is running on port `)
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on port `)
 })

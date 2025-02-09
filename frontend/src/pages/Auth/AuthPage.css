@@ -1,12 +1,13 @@
 :root {
-    --primary-color: #2563eb;
-    --secondary-color: #3b82f6;
+    --primary-color: #0d9488;
+    --secondary-color: #059669;
     --black: #000000;
     --white: #ffffff;
     --gray: #f3f4f6;
     --gray-2: #6b7280;
 }
 
+/* #059669, #0d9488 */
 
 * {
     font-family: 'Poppins', sans-serif;
@@ -29,6 +30,15 @@
 
 .col {
     width: 50%;
+}
+
+
+.signUp-btn {
+    background-color: var(--primary-color);
+}
+
+.signIn-btn {
+    background-color: var(--secondary-color);
 }
 
 .align-items-center {
@@ -192,7 +202,8 @@
     height: 100vh;
     width: 200vw;
     transform: translate(35%, 0);
-    background-image: linear-gradient(-45deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    /* background-image: linear-gradient(-45deg, var(--primary-color) 0%, var(--secondary-color) 100%); */
+    background: linear-gradient(to right, #059669, #0d9488);
     transition: 1s ease-in-out;
     z-index: 6;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
