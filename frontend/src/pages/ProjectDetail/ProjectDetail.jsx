@@ -6,6 +6,7 @@ import Map, { Marker } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { getUser } from "../../components/redux/authSlice";
 
+
 const defaultCenter = { lat: 20.5937, lng: 78.9629 }; // Default India center
 
 function ProjectDetail() {
