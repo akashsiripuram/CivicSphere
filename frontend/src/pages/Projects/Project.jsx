@@ -58,7 +58,7 @@ const categoryIcons = {
 };
 
 function CreateProjectModal() {
-  const [imgUrl,setImgUrl]=useState("");
+  const [imgUrl, setImgUrl] = useState("");
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     title: "",
@@ -68,19 +68,41 @@ function CreateProjectModal() {
     startDate: "",
     endDate: "",
     images: "",
+    city: ""
   });
-  
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setFormData({...formData,images:imgUrl});
-    console.log(formData);
-    console.log(imgUrl);
-    dispatch(addProject(formData)).then(() => {
-      toast.success("Project added successfully");
-    });
-    window.location.reload();
+    setFormData({ ...formData, images: imgUrl });
+
+    try {
+      // Dispatch action to add project
+      const projectResponse = await dispatch(addProject(formData)).unwrap(); // Ensure proper response handling
+
+      if (!projectResponse || !projectResponse.project || !projectResponse.project._id) {
+        throw new Error("Project creation failed");
+      }
+
+      const projectId = projectResponse.project._id; // Ensure this matches API response
+      const city = formData.city;
+
+      // Call location API with projectId and city
+      const locationResponse = await fetch(
+        `http://localhost:8000/api/location?projectId=${projectId}&city=${encodeURIComponent(city)}`,
+        { method: "GET" }
+      );
+
+      if (!locationResponse.ok) throw new Error("Location API call failed");
+
+      toast.success("Project added successfully!");
+      window.location.reload();
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Failed to create project!");
+    }
   };
+
   const handleFileUpload = async (e) => {
     e.preventDefault();
     console.log("Cominy");
@@ -98,8 +120,7 @@ function CreateProjectModal() {
         }
       );
       const uploadedUrl = response.data; // Assuming the API returns the URL directly in response.data
-      setImgUrl(uploadedUrl);
-      // console.log(formData.image);
+      setFormData({ ...formData, images: uploadedUrl });
       toast.success("File uploaded successfully!");
     } catch (err) {
       console.error(err);
@@ -198,6 +219,19 @@ function CreateProjectModal() {
               className="w-full"
             />
           </div>
+          <div className="space-y-2">
+            <Label htmlFor="fundingGoal">City</Label>
+            <Input
+              id="city"
+              type="text"
+              value={formData.city}
+              onChange={(e) =>
+                setFormData({ ...formData, city: e.target.value })
+              }
+              placeholder="Enter City"
+              className="w-full"
+            />
+          </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
@@ -244,8 +278,8 @@ function Project() {
   const [searchTerm, setSearchTerm] = useState("");
   const { isAuthenticated, user } = useSelector((state) => state.auth);
 
-  const handleJoin = (projectId,project) => {
-    
+  const handleJoin = (projectId, project) => {
+
     if (!user || project.members.includes(user.id)) {
       toast.info("You have already joined this project");
       return;
@@ -260,6 +294,7 @@ function Project() {
   useEffect(() => {
     dispatch(fetchProjects());
   }, []);
+
 
   // Mock additional projects for demonstration
   const allProjects = projects;
@@ -347,7 +382,7 @@ function Project() {
                   src={projectImages[project.category] || projectImages.water}
                   alt={project.title}
                   className="w-full h-full object-cover"
-                  
+
                 />
                 <div className="absolute top-4 right-4">
                   <span className="px-4 py-2 bg-green-500 text-white rounded-full text-sm font-semibold flex items-center gap-2">
@@ -417,7 +452,7 @@ function Project() {
                   <button
                     className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
                     onClick={() => handleJoin(project._id, project)}>
-                    {project.members.find((member) => member === user.id) ? "Joined" : "Join Project"}
+                    {(project.members && project.members.find((member) => member === user.id)) ? "Joined" : "Join Project"}
 
                     <Target className="w-4 h-4" />
                   </button>

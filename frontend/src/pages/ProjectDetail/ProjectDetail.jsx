@@ -2,32 +2,61 @@ import { getProject } from "../../components/redux/projectSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import Map, { Marker } from "react-map-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
+
+const defaultCenter = { lat: 20.5937, lng: 78.9629 }; // Default India center
 
 function ProjectDetail() {
-    const projectId = useParams();
+    const { id: projectId } = useParams();
     const { project, isLoading } = useSelector((state) => state.project);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getProject(projectId.id));
-    }, []);
+        dispatch(getProject(projectId));
+    }, [dispatch, projectId]);
+    useEffect(() => {
+        // Kommunicate Chatbot Integration
+        (function (d, m) {
+            var kommunicateSettings = {
+                "appId": "d560ccd17d1c66d340768072a8a76192", // Your Kommunicate App ID
+                "botIds": ["mybot-8c1bc"],
+                "assignee": "mybot-8c1bc",
+                "popupWidget": true, // Open chatbot as a popup
+                "automaticChatOpenOnNavigation": true
+            };
+
+            var s = document.createElement("script");
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
+            var h = document.getElementsByTagName("head")[0];
+            h.appendChild(s);
+            window.kommunicate = m;
+            m._globals = kommunicateSettings;
+        })(document, window.kommunicate || {});
+    }, []); // Runs only once when the component mounts
 
     if (isLoading) return <h1 className="text-center text-2xl font-bold text-gray-700">Loading...</h1>;
 
+    // Ensure coordinates are numbers to avoid errors
+    const latitude = parseFloat(project?.location?.coordinates?.lat || defaultCenter.lat);
+    const longitude = parseFloat(project?.location?.coordinates?.lng || defaultCenter.lng);
+
     return (
         project && (
-            <div className="flex h-screen p-6 bg-gray-100 gap-6">
+            <div className="flex h-screen p-6 bg-gray-100 gap-6 ">
                 {/* Left Side: Project Details */}
                 <div className="w-2/3 bg-white p-6 shadow-md rounded-lg flex flex-col">
-                    <h2 className="text-4xl font-extrabold text-gray-900 mb-4">{project.title}</h2>
+                    <h2 className="text-4xl font-bold text-gray-900 mb-4">{project.title}</h2>
                     <p className="text-lg text-gray-700 italic border-l-4 border-emerald-500 pl-4">{project.description}</p>
 
-                    {/* Image Covering Full Width */}
+                    {/* Image */}
                     {project.images?.length > 0 ? (
                         <img
                             src={project.images[0]}
                             alt="Project"
-                            className="mt-6 w-full h-64 object-cover rounded-lg shadow-md"
+                            className="mt-6 w-full h-48 object-cover rounded-lg shadow-md"
                         />
                     ) : (
                         <p className="text-gray-500 mt-6">No images available</p>
@@ -57,16 +86,27 @@ function ProjectDetail() {
                         </div>
                     </div>
 
-                    {/* 🔹 Sample Map Functionality - Project Updates */}
+                    {/* Map Section */}
                     <div className="mt-6">
-                        <h3 className="text-2xl font-bold mb-4">Map</h3>
+                        <h3 className="text-2xl font-bold mt-10 mb-4 ">Project Location</h3>
+                        <Map
+                            initialViewState={{
+                                longitude,
+                                latitude,
+                                zoom: 12,
+                            }}
+                            style={{ width: "100%", height: "350px" }}
+                            mapboxAccessToken="pk.eyJ1Ijoic2lyaWRldm9qdSIsImEiOiJjbHloZGdqYjIwMzVjMmtzYXowNjNzajRtIn0.5_fULxohRjzyjl9cKOL_mQ"
+                            mapStyle="mapbox://styles/mapbox/streets-v11"
+                        >
+                            <Marker longitude={longitude} latitude={latitude} color="red" />
+                        </Map>
                     </div>
                 </div>
 
                 {/* Right Side: Chat Section */}
                 <div className="w-1/3 p-6 bg-gradient-to-r from-emerald-600 to-teal-600 text-white flex flex-col rounded-lg shadow-lg">
                     <h2 className="text-2xl font-bold mb-4">Chat</h2>
-
                     <div className="mt-4">
                         <input
                             type="text"
