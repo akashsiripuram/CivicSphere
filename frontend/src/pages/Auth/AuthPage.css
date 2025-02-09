@@ -15,7 +15,7 @@
     box-sizing: border-box;
 }
 
-.container {
+.container-auth {
     position: relative;
     min-height: 100vh;
     overflow: hidden;
@@ -123,8 +123,8 @@
     color: var(--secondary-color);
 }
 
-.container.sign-in .form.sign-in,
-.container.sign-up .form.sign-up {
+.container-auth.sign-in .form.sign-in,
+.container-auth.sign-up .form.sign-up {
     transform: scale(1);
 }
 
@@ -175,16 +175,16 @@
     transform: translateX(250%);
 }
 
-.container.sign-in .text.sign-in h2,
-.container.sign-in .text.sign-in p,
-.container.sign-in .img.sign-in img,
-.container.sign-up .text.sign-up h2,
-.container.sign-up .text.sign-up p,
-.container.sign-up .img.sign-up img {
+.container-auth.sign-in .text.sign-in h2,
+.container-auth.sign-in .text.sign-in p,
+.container-auth.sign-in .img.sign-in img,
+.container-auth.sign-up .text.sign-up h2,
+.container-auth.sign-up .text.sign-up p,
+.container-auth.sign-up .img.sign-up img {
     transform: translateX(0);
 }
 
-.container::before {
+.container-auth::before {
     content: "";
     position: absolute;
     top: 0;
@@ -200,27 +200,27 @@
     border-top-left-radius: max(50vw, 50vh);
 }
 
-.container.sign-in::before {
+.container-auth.sign-in::before {
     transform: translate(0, 0);
     right: 50%;
 }
 
-.container.sign-up::before {
+.container-auth.sign-up::before {
     transform: translate(100%, 0);
     right: 50%;
 }
 
 @media (min-width: 1024px) {
-    .container {
+    .container-auth {
         max-width: 2000px;
     }
 }
 
 @media only screen and (max-width: 768px) {
 
-    .container::before,
-    .container.sign-in::before,
-    .container.sign-up::before {
+    .container-auth::before,
+    .container-auth.sign-in::before,
+    .container-auth.sign-up::before {
         height: 100vh;
         border-bottom-right-radius: 0;
         border-top-left-radius: 0;
@@ -229,8 +229,8 @@
         right: 0;
     }
 
-    .container.sign-in .col.sign-in,
-    .container.sign-up .col.sign-up {
+    .container-auth.sign-in .col.sign-in,
+    .container-auth.sign-up .col.sign-up {
         transform: translateY(0);
     }
 

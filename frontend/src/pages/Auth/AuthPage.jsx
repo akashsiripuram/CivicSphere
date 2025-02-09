@@ -65,7 +65,7 @@ const AuthPage = () => {
 
 
     return (
-        <div id="container" className="container">
+        <div id="container" className="container-auth ">
             <div className="row">
                 {/* Sign Up Form */}
                 <div className="col align-items-center flex-col sign-up">
@@ -156,7 +156,7 @@ const AuthPage = () => {
                                 <b>Forgot password?</b>
                             </p>
                             <p>
-                                <span>Don't have an account? </span>
+                                <span>Don&apos;t have an account? </span>
                                 <b onClick={toggle} className="pointer">
                                     Sign up here
                                 </b>

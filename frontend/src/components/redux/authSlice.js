@@ -12,7 +12,7 @@ export const registerUser = createAsyncThunk(
 
   async (formData) => {
     const response = await axios.post(
-      "http://localhost:8080/api/auth/register",
+      "http://localhost:8000/api/auth/register",
       formData,
       {
         withCredentials: true,
@@ -29,7 +29,7 @@ export const loginUser = createAsyncThunk(
   async (formData) => {
 
     const response = await axios.post(
-      "http://localhost:8080/api/auth/login",
+      "http://localhost:8000/api/auth/login",
       formData,
       {
         withCredentials: true,
@@ -46,7 +46,7 @@ export const logoutUser = createAsyncThunk(
 
   async () => {
     const response = await axios.post(
-      "http://localhost:8080/api/auth/logout",
+      "http://localhost:8000/api/auth/logout",
       {},
       {
         withCredentials: true,
@@ -62,7 +62,7 @@ export const checkAuth = createAsyncThunk(
 
   async () => {
     const response = await axios.get(
-      "http://localhost:8080/api/auth/check-auth",
+      "http://localhost:8000/api/auth/check-auth",
       {
         withCredentials: true,
         headers: {
