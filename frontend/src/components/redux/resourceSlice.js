@@ -10,6 +10,12 @@ export const fetchResources = createAsyncThunk("/resources", async () => {
  const response = await axios.get("http://localhost:8000/api/resources");
  return response.data;
 });
+export const addResouce=createAsyncThunk("/resources/add",async()=>{
+    const response=await axios.post("http://localhost:8000/api/resources/add",{},{
+        withCredentials:true
+    });
+    return response.data;
+})
 
 const resourceSlice=createSlice({
     name:"resource",
@@ -27,6 +33,7 @@ const resourceSlice=createSlice({
             state.isLoading=false;
             console.log("Error fetching resources",action.error);
         })
+        
     }
 });
 

@@ -29,6 +29,7 @@ export const joinProject = createAsyncThunk("/project/join", async (projectId) =
     return response.data;
 });
 export const getProject=createAsyncThunk("/project/get",async(projectId)=>{
+   
     const response=await axios.get(`http://localhost:8000/api/project/${projectId}`,{
         withCredentials: true,
     })
