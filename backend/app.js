@@ -5,6 +5,7 @@ import userRouter from "./routes/user.route.js";
 import resourceRouter from "./routes/resource.route.js"
 import connectDb from "./utils/connectDb.js";
 import issueRouter from "./routes/issue.route.js";
+import locationRouter from './routes/location.route.js'
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import multer from "multer";
@@ -39,6 +40,7 @@ app.use("/api/auth", userRouter);
 app.use("/api/project", projectRouter);
 app.use("/api/resources", resourceRouter);
 app.use("/api/issues", issueRouter);
+app.use('/api/location', locationRouter)
 
 
 //listening on port
