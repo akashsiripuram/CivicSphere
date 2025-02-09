@@ -53,6 +53,18 @@ const ProjectSchema = mongoose.Schema({
     type: String,
     default:''
   },
+  location: {
+    city: { type: String }, 
+    coordinates: {
+      lat: { type: Number, default: null }, 
+      lng: { type: Number, default: null }  
+    }
+  },
+  level:{
+    type: String,
+    enum:['small','medium','large'],
+    default:'medium'
+  },
   createdAt: {
     type: Date,
     default: Date.now,

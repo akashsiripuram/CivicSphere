@@ -18,6 +18,13 @@ const userSchema = mongoose.Schema({
         type: String,
         enum: ['citizen', 'community_leader', 'gov_official']
     },
+    logs: [
+        {
+            pointsAdded: { type: Number, required: true }, // Points added or subtracted
+            reason: { type: String, required: true }, // Reason for the change
+            date: { type: Date, default: Date.now }, // Date of the change
+        }
+    ],
     points: {
         type: Number,
         default: 0

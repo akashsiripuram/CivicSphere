@@ -8,7 +8,7 @@ const transporter = nodemailer.createTransport({
       pass: "uqfcpoxuzvfiwvuo", // Your app-specific password from .env
     },
   });
-export default async function sendMail(email){
+export default async function sendMail(email,msg){
   
 
   if (!email) {
@@ -23,7 +23,7 @@ export default async function sendMail(email){
       from: "akashsiripuram05@gmail.com",
       to: email,
       subject: "Joined Project",
-      text: `You have successfully joined project`,
+      text: msg,
     });
     
     

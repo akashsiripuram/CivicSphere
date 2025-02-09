@@ -2,6 +2,31 @@ import Project from "../models/Project.js";
 import sendMail from "../utils/sendEmail.js";
 import User from "../models/User.js";
 
+async function updatePoints(userId, pointsToAdd, reason) {
+  try {
+    const user = await User.findOneAndUpdate(
+      { _id: userId },
+      {
+        $inc: { points: pointsToAdd }, // Increment points
+        $push: { // Add log entry
+          logs: {
+            pointsAdded: pointsToAdd,
+            reason,
+            date: new Date(),
+          },
+        },
+      },
+      { new: true } // Return the updated document
+    );
+
+    console.log('Updated user points:', user);
+    return user;
+  } catch (error) {
+    console.error('Error updating points:', error);
+    throw error;
+  }
+}
+
 //add project
 export const addProject = async (req, res) => {
   console.log("addProject");
@@ -13,10 +38,24 @@ export const addProject = async (req, res) => {
     endDate,
     images,
     fundingGoal,
+    city
   } = req.body;
   try {
     const createdBy = req.user.id;
     console.log(createdBy);
+    let level;
+    if(fundingGoal<=10000){
+      level='small';
+      
+
+    }else if(fundingGoal>=10000&&fundingGoal<=100000){
+      level='medium';
+      
+    }
+    else{
+       level='large'
+     
+    }
     const newProject = new Project({
       title,
       description,
@@ -26,8 +65,26 @@ export const addProject = async (req, res) => {
       createdBy,
       images,
       fundingGoal,
+      level,
+      location:{
+        city:city
+      }
     });
     const savedProject = await newProject.save();
+    const user=await User.findById(createdBy);
+    if(fundingGoal<=10000){
+      updatePoints(createdBy,100,`Points added for creation of ${savedProject.title}`);
+      user.points+=100;
+    }else if(fundingGoal>=10000&&fundingGoal<=100000){
+      updatePoints(createdBy,500,`Points added for creation of ${savedProject.title}`);
+      user.points+=500;
+    }
+    else{
+      updatePoints(createdBy,1000,`Points added for creation of ${savedProject.title}`);
+      user.points+=1000;
+    }
+    await user.save();
+    sendMail(user.email,`Project added successfully and you earned the points of ${user.points}`);
     res.json({
       success: true,
       project: savedProject,

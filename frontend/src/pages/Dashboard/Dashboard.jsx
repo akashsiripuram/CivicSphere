@@ -14,17 +14,21 @@ import {
 import { useEffect } from "react";
 import { fetchProjects } from "../../components/redux/projectSlice";
 import { fetchIssues } from "../../components/redux/issueSlice";
+import { getUser } from "../../components/redux/authSlice";
 
 function Dashboard() {
   const { isLoading, user } = useSelector((state) => state.auth);
   const { issues } = useSelector((state) => state.issue);
   const { projects } = useSelector((state) => state.project);
 
+
   const dispatch=useDispatch();
   useEffect(()=>{
+    dispatch(getUser(user.id));
     dispatch(fetchProjects());
     dispatch(fetchIssues());
   },[])
+  console.log(user);
 
   if (isLoading) {
     return (
@@ -35,6 +39,7 @@ function Dashboard() {
       </div>
     );
   }
+  console.log(user);
 
   const createdProjects = projects.filter(project => project.createdBy === user.id);
   const joinedProjects = projects.filter(project => project.members.includes(user.id));
@@ -54,8 +59,9 @@ function Dashboard() {
               <Users className="w-12 h-12 text-emerald-600" />
             </div>
             <div className="text-white">
-              <h1 className="text-3xl font-bold">{user?.email}</h1>
-              <p className="opacity-80">User ID: {user?.id}</p>
+              <h1 className="text-3xl font-bold">{user?.name}</h1>
+              <p className="opacity-80">Email: {user?.email}</p>
+              <p className="opacity-80">Role: {user?.role}</p>
               <div className="flex gap-2 mt-3">
                 {userBadges.map((badge, index) => (
                   <span key={index} className="px-3 py-1 bg-white/20 rounded-full text-sm">
@@ -81,7 +87,7 @@ function Dashboard() {
           </div>
           <div className="flex flex-col items-center">
             <Link2 className="w-6 h-6 text-teal-500" />
-            <span className="text-2xl font-bold text-teal-600 mt-2">{userPoints}</span>
+            <span className="text-2xl font-bold text-teal-600 mt-2">{user.points}</span>
             <span className="text-sm text-gray-500">Points</span>
           </div>
         </div>

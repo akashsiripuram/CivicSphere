@@ -76,6 +76,17 @@ export const checkAuth = createAsyncThunk(
   }
 );
 
+export const getUser=createAsyncThunk(
+  "/user",
+
+  async (id) => {
+    const response = await axios.get(`http://localhost:8000/api/auth/user/${id}`,{
+      withCredentials: true,
+    })
+    return response.data;
+  }
+)
+
 
 
 
@@ -134,6 +145,9 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.user = null;
         state.isAuthenticated = false;
+      })
+      .addCase(getUser.fulfilled,(state,action)=>{
+        state.user=action.payload.user;
       })
 
   },

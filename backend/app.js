@@ -7,9 +7,11 @@ import connectDb from "./utils/connectDb.js";
 import issueRouter from "./routes/issue.route.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import multer from "multer";
+import uploadToS3 from "./utils/AWSUpload.js";
 const app = express();
 
-
+const upload = multer({ storage: multer.memoryStorage() });
 app.use(cookieParser());
 app.use(
   cors({
@@ -25,6 +27,13 @@ app.use(express.json());
 //connecting to database
 connectDb();
 
+app.post("/api/v1/upload", upload.single("file"), async (req, res) => {
+  console.log(req.file);
+
+  const fileUrl = await uploadToS3(req.file);
+
+  return res.status(200).json(fileUrl);
+});
 //Routes
 app.use("/api/auth", userRouter);
 app.use("/api/project", projectRouter);

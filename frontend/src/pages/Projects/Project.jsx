@@ -37,6 +37,7 @@ import {
 import { Textarea } from "../../components/ui/textarea";
 import { data, Link } from "react-router-dom";
 import { toast } from "sonner";
+import axios from "axios";
 
 const projectImages = {
   water:
@@ -57,6 +58,7 @@ const categoryIcons = {
 };
 
 function CreateProjectModal() {
+  const [imgUrl,setImgUrl]=useState("");
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     title: "",
@@ -67,13 +69,42 @@ function CreateProjectModal() {
     endDate: "",
     images: "",
   });
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addProject(formData)).then((data) => {
-      console.log(data);
-    });
+    setFormData({...formData,images:imgUrl});
     console.log(formData);
+    console.log(imgUrl);
+    dispatch(addProject(formData)).then(() => {
+      toast.success("Project added successfully");
+    });
+    window.location.reload();
+  };
+  const handleFileUpload = async (e) => {
+    e.preventDefault();
+    console.log("Cominy");
+    const file = e.target.files[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await axios.post(
+        `http://localhost:8000/api/v1/upload`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      const uploadedUrl = response.data; // Assuming the API returns the URL directly in response.data
+      setImgUrl(uploadedUrl);
+      // console.log(formData.image);
+      toast.success("File uploaded successfully!");
+    } catch (err) {
+      console.error(err);
+      toast.error("File upload failed!");
+    }
   };
 
   return (
@@ -96,9 +127,10 @@ function CreateProjectModal() {
             <Input
               id="image"
               value={formData.image}
-              onChange={(e) =>
-                setFormData({ ...formData, title: e.target.value })
-              }
+              // onChange={(e) =>
+              //   setFormData({ ...formData, title: e.target.value })
+              // }
+              onChange={handleFileUpload}
               type="file"
               className="w-full"
             />
@@ -212,8 +244,8 @@ function Project() {
   const [searchTerm, setSearchTerm] = useState("");
   const { isAuthenticated, user } = useSelector((state) => state.auth);
 
-  const handleJoin = (projectId, project) => {
-
+  const handleJoin = (projectId,project) => {
+    
     if (!user || project.members.includes(user.id)) {
       toast.info("You have already joined this project");
       return;
@@ -230,46 +262,7 @@ function Project() {
   }, []);
 
   // Mock additional projects for demonstration
-  const allProjects = projects
-    ? [
-      ...projects,
-      {
-        _id: "2",
-        title: "Solar Power Initiative",
-        description: "Bringing renewable solar energy to urban communities.",
-        category: "solar",
-        fundingGoal: 75000,
-        members: ["1", "2", "3"],
-        startDate: "2025-03-01T00:00:00.000Z",
-        endDate: "2025-08-01T00:00:00.000Z",
-        status: "active",
-      },
-      {
-        _id: "3",
-        title: "Urban Forest Project",
-        description:
-          "Creating green spaces in city centers to improve air quality.",
-        category: "forest",
-        fundingGoal: 30000,
-        members: ["1", "2"],
-        startDate: "2025-04-01T00:00:00.000Z",
-        endDate: "2025-07-01T00:00:00.000Z",
-        status: "active",
-      },
-      {
-        _id: "4",
-        title: "Zero Waste Program",
-        description:
-          "Implementing comprehensive recycling and waste reduction systems.",
-        category: "waste",
-        fundingGoal: 45000,
-        members: ["1", "2", "3", "4"],
-        startDate: "2025-05-01T00:00:00.000Z",
-        endDate: "2025-09-01T00:00:00.000Z",
-        status: "active",
-      },
-    ]
-    : [];
+  const allProjects = projects;
 
   const filteredProjects = allProjects.filter((project) => {
     const matchesFilter = filter === "all" || project.category === filter;
@@ -354,6 +347,7 @@ function Project() {
                   src={projectImages[project.category] || projectImages.water}
                   alt={project.title}
                   className="w-full h-full object-cover"
+                  
                 />
                 <div className="absolute top-4 right-4">
                   <span className="px-4 py-2 bg-green-500 text-white rounded-full text-sm font-semibold flex items-center gap-2">
