@@ -7,9 +7,9 @@ export const reportIssue = async (req, res) => {
     console.log("Report")
     const newIssue = new Issues({ createdBy, issueType, description, location, images, priority });
     await newIssue.save();
-    res.status(201).json({ message: "Issue reported successfully!", issue: newIssue });
+    res.status(201).json({ message: "Issue reported successfully!", issue: newIssue,success:true });
   } catch (error) {
-    res.status(500).json({ error: "Failed to report issue", details: error.message });
+    res.status(500).json({ success:false,error: "Failed to report issue", details: error.message });
   }
 };
 

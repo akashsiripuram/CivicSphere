@@ -9,6 +9,7 @@ import issueRouter from "./routes/issue.route.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import multer from "multer";
+import locationRouter from './routes/location.route.js'
 import uploadToS3 from "./utils/AWSUpload.js";
 const app = express();
 
@@ -41,6 +42,7 @@ app.use("/api/project",projectRouter);
 app.use("/api/resources",resourceRouter);
 app.use("/api/issues",issueRouter);
 app.use("/api/payments",paymentRouter);
+app.use('/api/location', locationRouter)
 //listening on port
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port `)
