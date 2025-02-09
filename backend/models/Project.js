@@ -53,6 +53,13 @@ const ProjectSchema = mongoose.Schema({
     type: String,
     default:''
   },
+  location: {
+    city: { type: String }, 
+    coordinates: {
+      lat: { type: Number, default: null }, 
+      lng: { type: Number, default: null }  
+    }
+  },
   createdAt: {
     type: Date,
     default: Date.now,

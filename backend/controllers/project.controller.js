@@ -2,6 +2,7 @@ import Project from "../models/Project.js";
 import sendMail from "../utils/sendEmail.js";
 import User from "../models/User.js";
 
+
 //add project
 export const addProject = async (req, res) => {
   console.log("addProject");
@@ -28,6 +29,24 @@ export const addProject = async (req, res) => {
       fundingGoal,
     });
     const savedProject = await newProject.save();
+    const user=await User.findById(createdBy);
+    if(fundingGoal<=10000){
+      
+      user.points+=100;
+      
+
+    }else if(fundingGoal>=10000&&fundingGoal<=100000){
+      
+      user.points+=500;
+      
+    }
+    else{
+     
+      user.points+=1000;
+     
+    }
+    await user.save();
+    sendMail(user.email,`Project added successfully and you earned the points of ${user.points}`);
     res.json({
       success: true,
       project: savedProject,
