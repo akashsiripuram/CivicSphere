@@ -25,7 +25,14 @@ export const addEmergency = async (req, res) => {
       status,
     });
 
-    console.log("New Emergency Before Save:", newEmergency);
+   const users=await User.find({});
+   users.forEach(user => {
+     sendEmail({
+       to: user.email,
+       subject: `New Emergency Reported: ${newEmergency.type}`,
+       text: `A new emergency has been reported at ${newEmergency.coordinates.lat},${newEmergency.coordinates.lng}. Status: ${newEmergency.status}`,
+     });
+   });
 
     await newEmergency.save();
 
