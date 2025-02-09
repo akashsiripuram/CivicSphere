@@ -147,7 +147,7 @@ function CreateProjectModal() {
             <Label htmlFor="image">Project Image</Label>
             <Input
               id="image"
-              value={formData.image}
+              value={formData.images}
               // onChange={(e) =>
               //   setFormData({ ...formData, title: e.target.value })
               // }
@@ -358,7 +358,7 @@ function Project() {
           </div>
 
           <div className="flex gap-2 flex-wrap justify-center">
-            {["all", "water", "solar", "forest", "waste"].map((category) => (
+            {["all", "education", "healthcare", "environment", "politics","cleanliness","transport","energy","disaster relief","other"].map((category) => (
               <button
                 key={category}
                 onClick={() => setFilter(category)}
@@ -379,7 +379,7 @@ function Project() {
               className="bg-white rounded-xl shadow-xl overflow-hidden transform hover:scale-[1.02] transition-all duration-300">
               <div className="relative h-48">
                 <img
-                  src={projectImages[project.category] || projectImages.water}
+                  src={project.images[0] || projectImages.water}
                   alt={project.title}
                   className="w-full h-full object-cover"
 

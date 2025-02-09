@@ -13,6 +13,7 @@ import Issue from "./pages/Issues/Issue";
 import Resource from "./pages/resources/Resource";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import ProjectDetail from "./pages/ProjectDetail/ProjectDetail";
+import Donation from "./pages/Donations/Donation";
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
@@ -50,6 +51,7 @@ function App() {
               <Route path="issues" element={<Issue />} />
               <Route path="resources" element={<Resource />} />
               <Route path="project/:id" element={<ProjectDetail />} />
+              <Route path="donations" element={<Donation/>} />
             </Route>
           )
         }

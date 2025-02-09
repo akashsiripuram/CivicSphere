@@ -11,7 +11,8 @@ import {
   MessageSquare, 
   Link2 
 } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Chart } from "react-google-charts";
 import { fetchProjects } from "../../components/redux/projectSlice";
 import { fetchIssues } from "../../components/redux/issueSlice";
 import { getUser } from "../../components/redux/authSlice";
@@ -20,6 +21,7 @@ function Dashboard() {
   const { isLoading, user } = useSelector((state) => state.auth);
   const { issues } = useSelector((state) => state.issue);
   const { projects } = useSelector((state) => state.project);
+  const [chartData, setChartData] = useState([]);
 
 
   const dispatch=useDispatch();
@@ -28,7 +30,13 @@ function Dashboard() {
     dispatch(fetchProjects());
     dispatch(fetchIssues());
   },[])
-  console.log(user);
+  useEffect(() => {
+    if (user?.logs) {
+      const formattedData = user.logs.map((log) => [new Date(log.date).toLocaleDateString("en-US", { year: "numeric", month: "short" })
+        , log.pointsAdded]);
+      setChartData([["Date", "Points"], ...formattedData]);
+    }
+  }, [user]);
 
   if (isLoading) {
     return (
@@ -48,7 +56,7 @@ function Dashboard() {
 
   const userPoints = 120;
   const userBadges = ["Community Helper", "Sustainability Advocate"];
-
+  console.log(user);
   return (
     <div className="min-h-screen bg-emerald-50 p-6">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -117,6 +125,30 @@ function Dashboard() {
             </div>
           </div>
         </div>
+        <div className="min-h-screen bg-emerald-50 p-6">
+      <div className="max-w-7xl mx-auto space-y-6">
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h3 className="font-semibold mb-4">User Points Over Time</h3>
+          {chartData.length > 1 ? (
+            <Chart
+              chartType="LineChart"
+              width="100%"
+              height="400px"
+              data={chartData}
+              options={{
+                title: "Points History",
+                curveType: "function",
+                legend: { position: "bottom" },
+                hAxis: { title: "Date" },
+                vAxis: { title: "Points" },
+              }}
+            />
+          ) : (
+            <p className="text-gray-500">No data available</p>
+          )}
+        </div>
+      </div>
+    </div>
       </div>
     </div>
   );

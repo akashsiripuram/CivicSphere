@@ -4,15 +4,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Map, { Marker } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { getUser } from "../../components/redux/authSlice";
 
 const defaultCenter = { lat: 20.5937, lng: 78.9629 }; // Default India center
 
 function ProjectDetail() {
     const { id: projectId } = useParams();
+    const { user } = useSelector((state) => state.auth);
     const { project, isLoading } = useSelector((state) => state.project);
     const dispatch = useDispatch();
 
     useEffect(() => {
+        dispatch(getProject(projectId));
+        dispatch(getUser(user.id));
         dispatch(getProject(projectId));
     }, [dispatch, projectId]);
     useEffect(() => {
@@ -37,6 +41,8 @@ function ProjectDetail() {
         })(document, window.kommunicate || {});
     }, []); // Runs only once when the component mounts
 
+    console.log(user);
+    console.log(project);
     if (isLoading) return <h1 className="text-center text-2xl font-bold text-gray-700">Loading...</h1>;
 
     // Ensure coordinates are numbers to avoid errors
@@ -61,6 +67,14 @@ function ProjectDetail() {
                     ) : (
                         <p className="text-gray-500 mt-6">No images available</p>
                     )}
+
+                    {
+                        user && user.role === "gov_official" && project && project.level === "large" && (
+                            <div>
+                                <button className="bg-green-400 p-3">Request to Assigin</button>
+                            </div>
+                        )
+                    }
 
                     {/* Information Grid */}
                     <div className="grid grid-cols-2 gap-6 mt-6 text-lg">
@@ -101,11 +115,11 @@ function ProjectDetail() {
                         >
                             <Marker longitude={longitude} latitude={latitude} color="red" />
                         </Map>
-                    </div>
-                </div>
+                    </div >
+                </div >
 
                 {/* Right Side: Chat Section */}
-                <div className="w-1/3 p-6 bg-gradient-to-r from-emerald-600 to-teal-600 text-white flex flex-col rounded-lg shadow-lg">
+                < div className="w-1/3 p-6 bg-gradient-to-r from-emerald-600 to-teal-600 text-white flex flex-col rounded-lg shadow-lg" >
                     <h2 className="text-2xl font-bold mb-4">Chat</h2>
                     <div className="mt-4">
                         <input
@@ -114,8 +128,8 @@ function ProjectDetail() {
                             className="w-full p-2 rounded-lg text-gray-800"
                         />
                     </div>
-                </div>
-            </div>
+                </div >
+            </div >
         )
     );
 }

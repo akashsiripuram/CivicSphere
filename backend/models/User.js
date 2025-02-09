@@ -1,9 +1,17 @@
 import mongoose from "mongoose";
 
+<<<<<<< HEAD
 const userSchema = mongoose.Schema({
     name: {
         type: String,
         required: true
+=======
+
+const userSchema=mongoose.Schema({
+    name:{
+        type:String,
+        required:true
+>>>>>>> 3cadb8fd4b5b49cf149d9d17a9aba055d5f0887c
     },
     email: {
         type: String,
@@ -33,9 +41,25 @@ const userSchema = mongoose.Schema({
         type: Array,
         default: []
     },
+<<<<<<< HEAD
     createdAt: {
         type: Date,
         default: Date.now
+=======
+    assignedTo:{
+        role:{
+            type:String,
+            enum:['community_leader','gov_official']
+        },
+        userId:{
+            type: mongoose.Schema.ObjectId,
+            ref: 'User'
+        }
+    },
+    createdAt:{
+        type:Date,
+        default:Date.now
+>>>>>>> 3cadb8fd4b5b49cf149d9d17a9aba055d5f0887c
     }
 });
 

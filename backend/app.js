@@ -2,6 +2,7 @@ import express from "express";
 import "dotenv/config"
 import projectRouter from "./routes/project.route.js";
 import userRouter from "./routes/user.route.js";
+import paymentRouter from "./routes/payment.route.js";
 import resourceRouter from "./routes/resource.route.js"
 import connectDb from "./utils/connectDb.js";
 import issueRouter from "./routes/issue.route.js";
@@ -9,6 +10,7 @@ import locationRouter from './routes/location.route.js'
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import multer from "multer";
+import locationRouter from './routes/location.route.js'
 import uploadToS3 from "./utils/AWSUpload.js";
 const app = express();
 
@@ -36,6 +38,7 @@ app.post("/api/v1/upload", upload.single("file"), async (req, res) => {
   return res.status(200).json(fileUrl);
 });
 //Routes
+<<<<<<< HEAD
 app.use("/api/auth", userRouter);
 app.use("/api/project", projectRouter);
 app.use("/api/resources", resourceRouter);
@@ -43,6 +46,14 @@ app.use("/api/issues", issueRouter);
 app.use('/api/location', locationRouter)
 
 
+=======
+app.use("/api/auth",userRouter);
+app.use("/api/project",projectRouter);
+app.use("/api/resources",resourceRouter);
+app.use("/api/issues",issueRouter);
+app.use("/api/payments",paymentRouter);
+app.use('/api/location', locationRouter)
+>>>>>>> 3cadb8fd4b5b49cf149d9d17a9aba055d5f0887c
 //listening on port
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port `)
