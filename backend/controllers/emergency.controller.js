@@ -27,11 +27,12 @@ export const addEmergency = async (req, res) => {
 
    const users=await User.find({});
    users.forEach(user => {
-     sendEmail({
-       to: user.email,
-       subject: `New Emergency Reported: ${newEmergency.type}`,
-       text: `A new emergency has been reported at ${latitude},${longitude}. Status: ${newEmergency.status}`,
-     });
+    
+     sendEmail(
+       user.email,
+       
+       `A new emergency has been reported at ${latitude},${longitude}. Status: ${newEmergency.status}`,
+     );
    });
 
     await newEmergency.save();
