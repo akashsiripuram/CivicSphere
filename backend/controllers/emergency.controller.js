@@ -30,7 +30,7 @@ export const addEmergency = async (req, res) => {
      sendEmail({
        to: user.email,
        subject: `New Emergency Reported: ${newEmergency.type}`,
-       text: `A new emergency has been reported at ${newEmergency.coordinates.lat},${newEmergency.coordinates.lng}. Status: ${newEmergency.status}`,
+       text: `A new emergency has been reported at ${latitude},${longitude}. Status: ${newEmergency.status}`,
      });
    });
 

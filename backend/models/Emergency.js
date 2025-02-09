@@ -4,7 +4,7 @@ const EmergencySchema = mongoose.Schema({
   type: {
     type: String,
     required: true,
-    enum: ["Fire", "Earthquake", "Natural Disaster"],
+    
   },
   location: {
     city: { type: String },

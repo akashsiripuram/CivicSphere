@@ -60,16 +60,15 @@ function Emergency() {
 
     setFormData({ type: "", latitude: null, longitude: null });
     toast.success("Emergency report submitted.");
+    dispatch(getAllEmergencies());
+    window.location.reload();
   };
-
-  // Filter emergencies into Pending and Resolved
-  const pendingEmergencies = emergencies.filter((emergency) => emergency.status === "pending");
-  const resolvedEmergencies = emergencies.filter((emergency) => emergency.status === "resolved");
 
   return (
     <div className="p-6 font-sans">
       <h1 className="text-3xl font-semibold text-center text-gray-800">Emergency Page</h1>
 
+      {/* Emergency Reporting Form */}
       <form onSubmit={handleSubmit} className="mt-6 flex flex-col items-center">
         <label className="mb-2 text-lg text-gray-700">Type of Emergency:</label>
         <input
@@ -87,7 +86,6 @@ function Emergency() {
         >
           {isFetchingLocation ? "Fetching Location..." : "Get My Location"}
         </button>
-        <br />
         <input
           type="submit"
           value="Submit"
@@ -96,28 +94,29 @@ function Emergency() {
         />
       </form>
 
-      <div className="mt-8">
-        <h2 className="text-2xl font-semibold text-gray-800">Pending Emergencies</h2>
-        <ul className="mt-4 space-y-4">
-          {pendingEmergencies.map((emergency) => (
-            <li key={emergency._id} className="p-4 border border-gray-300 rounded-lg">
-              <p className="text-lg text-gray-700"><strong>Type:</strong> {emergency.type}</p>
-              <p className="text-sm text-gray-500"><strong>Location:</strong> {`Lat: ${emergency.location.coordinates.lat}, Lng: ${emergency.location.coordinates.lng}`}</p>
-              <p className="text-sm text-gray-500"><strong>Status:</strong> {emergency.status}</p>
-            </li>
-          ))}
-        </ul>
+      {/* Loading State */}
+      {isLoading && <p className="text-center text-gray-600 mt-4">Loading emergencies...</p>}
 
-        <h2 className="text-2xl font-semibold text-gray-800 mt-8">Resolved Emergencies</h2>
-        <ul className="mt-4 space-y-4">
-          {resolvedEmergencies.map((emergency) => (
-            <li key={emergency._id} className="p-4 border border-gray-300 rounded-lg">
-              <p className="text-lg text-gray-700"><strong>Type:</strong> {emergency.type}</p>
-              <p className="text-sm text-gray-500"><strong>Location:</strong> {`Lat: ${emergency.latitude}, Lng: ${emergency.longitude}`}</p>
-              <p className="text-sm text-gray-500"><strong>Status:</strong> {emergency.status}</p>
-            </li>
-          ))}
-        </ul>
+      {/* Display Emergency Reports */}
+      <div className="mt-8">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Reported Emergencies</h2>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {emergencies?.length > 0 ? (
+            emergencies.map((emergency) => (
+              <div key={emergency._id} className="bg-white shadow-lg rounded-lg p-4 border">
+                <h3 className="text-lg font-semibold text-red-600">{emergency.type}</h3>
+                <p className="text-sm text-gray-600 mt-1">📍 <b>Location:</b> {emergency.location.city || "Unknown"}</p>
+                <p className="text-sm text-gray-600 mt-1">🌍 <b>Coordinates:</b> {emergency.location.coordinates.lat}, {emergency.location.coordinates.lng}</p>
+                <p className="text-sm text-gray-600 mt-1">📅 <b>Reported On:</b> {new Date(emergency.createdAt).toLocaleString()}</p>
+                <p className={`text-sm font-bold mt-2 py-1 px-3 rounded-full inline-block ${emergency.status === "pending" ? "bg-yellow-200 text-yellow-800" : "bg-green-200 text-green-800"}`}>
+                  {emergency.status.toUpperCase()}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-gray-600">No emergencies reported yet.</p>
+          )}
+        </div>
       </div>
     </div>
   );
