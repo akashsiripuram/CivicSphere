@@ -26,13 +26,13 @@ app.use(express.json());
 connectDb();
 
 //Routes
-app.use("/api/auth",userRouter);
-app.use("/api/project",projectRouter);
-app.use("/api/resources",resourceRouter);
-app.use("api/issues",issueRouter);
+app.use("/api/auth", userRouter);
+app.use("/api/project", projectRouter);
+app.use("/api/resources", resourceRouter);
+app.use("api/issues", issueRouter);
 
 
 //listening on port
-app.listen(process.env.PORT,()=>{
-    console.log(`Server is running on port `)
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on port `)
 })

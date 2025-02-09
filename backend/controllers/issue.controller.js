@@ -1,7 +1,7 @@
 import Issues from "../models/Issue.js";
 
 export const reportIssue = async (req, res) => {
-    console.log("report");
+  console.log("report");
   try {
     const { createdBy, issueType, description, location, images, priority } = req.body;
     const newIssue = new Issues({ createdBy, issueType, description, location, images, priority });
@@ -13,14 +13,14 @@ export const reportIssue = async (req, res) => {
 };
 
 export const getAllIssues = async (req, res) => {
-    try {
-      const issues = await Issues.find();
-      res.status(200).json(issues);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to fetch issues", details: error.message });
-    }
+  try {
+    const issues = await Issues.find();
+    res.status(200).json(issues);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch issues", details: error.message });
+  }
 };
-  
+
 
 export const getNearbyIssues = async (req, res) => {
   try {
