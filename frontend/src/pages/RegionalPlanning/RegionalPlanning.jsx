@@ -6,6 +6,7 @@ import { Bar } from "react-chartjs-2";
 import { Card, CardHeader, CardContent } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { Alert, AlertTitle, AlertDescription } from "../../components/ui/alert";
+import ReactMarkdown from "react-markdown";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -14,11 +15,12 @@ const GEO_API_KEY = "a7060db4c17739ddbe9cd0778ebb0260"; // Use OpenWeather or an
 
 function RegionalPlanning() {
   const [location, setLocation] = useState(null);
+  const [manualInput, setManualInput] = useState(""); // User's manual input
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(false);
   const [chartData, setChartData] = useState(null);
 
-  // 📌 Automatically fetch user's city and population
+  // Fetch user's city and population via geolocation
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       async (position) => {
@@ -39,22 +41,24 @@ function RegionalPlanning() {
     );
   }, []);
 
-  // 📌 Generate AI-Based Urban Growth Report
+  // Generate AI-Based Urban Growth Report
   const generateReport = async () => {
-    if (!location) return;
+    if (!location && !manualInput) return;
 
     setLoading(true);
     setReport(null);
     setChartData(null);
 
+    const city = manualInput || location.city;
+
     const prompt = `
       Predict the urban growth of the following city based on:
-      - Population: ${location.population}
+      - Population: ${location?.population || "unknown"}
       - Infrastructure: Budget allocation, transport, sustainability projects
       - Environmental sustainability efforts
       - Citizen engagement in development
 
-      City: ${location.city}
+      City: ${city}
       Provide key insights in a structured format.
     `;
 
@@ -70,18 +74,17 @@ function RegionalPlanning() {
       const aiResponse = response.data.candidates?.[0]?.content?.parts?.[0]?.text || "No response from AI.";
       setReport(aiResponse);
 
-      // 📊 Process data for visualization
+      // Process data for visualization
       setChartData({
         labels: ["Population", "Infrastructure Budget", "Public Transport", "Green Spaces"],
         datasets: [
           {
             label: "City Development Index",
-            data: [location.population / 10000, 75, 60, 80], // Mock data
+            data: [location?.population / 10000 || 50, 75, 60, 80], // Mock data
             backgroundColor: ["#4CAF50", "#2196F3", "#FF9800", "#9C27B0"],
           },
         ],
       });
-
     } catch (error) {
       console.error("Error generating AI report:", error);
       setReport("Error generating prediction.");
@@ -103,27 +106,32 @@ function RegionalPlanning() {
       {/* City Info Card */}
       <Card className="max-w-3xl mx-auto shadow-md mb-6 bg-white border border-gray-200">
         <CardHeader className="text-center">
-          <h2 className="text-2xl font-semibold text-emerald-700">📍 Current Location</h2>
+          <h2 className="text-2xl font-semibold text-emerald-700">📍 Enter Location</h2>
         </CardHeader>
         <CardContent className="text-center">
-          {location ? (
-            <>
-              <p className="text-lg font-medium text-gray-800">City: <span className="font-semibold">{location.city}</span></p>
-              <p className="text-lg font-medium text-gray-800">Population: <span className="font-semibold">{location.population.toLocaleString()}</span></p>
-            </>
-          ) : (
-            <p className="text-gray-500">Fetching location...</p>
-          )}
+          <p className="text-lg font-medium text-gray-800">Current Location: {location?.city || "Not available"}</p>
+          <p className="text-gray-600 text-sm">Detected from your geolocation or manually entered below.</p>
+
+          {/* User Input */}
+          <div className="mt-4">
+            <input
+              type="text"
+              value={manualInput}
+              onChange={(e) => setManualInput(e.target.value)}
+              placeholder="Enter city, state, or country"
+              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            />
+          </div>
         </CardContent>
       </Card>
 
-      {/* AI Report Section */}
+      {/* Generate Report Section */}
       <Card className="max-w-3xl mx-auto shadow-md bg-white border border-gray-200">
         <CardHeader className="text-center">
           <h2 className="text-2xl font-semibold text-emerald-700">📊 AI-Based Urban Growth Prediction</h2>
         </CardHeader>
         <CardContent>
-          <Button onClick={generateReport} disabled={loading} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
+          <Button onClick={generateReport} disabled={loading || (!location && !manualInput)} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
             {loading ? "Analyzing..." : "Generate AI Report"}
           </Button>
 
@@ -132,16 +140,14 @@ function RegionalPlanning() {
             <Alert className="mt-4 bg-emerald-50 border-emerald-400">
               <AlertTitle className="text-emerald-800">AI Prediction</AlertTitle>
               <AlertDescription className="text-gray-700">
-                {report.split("\n").map((line, index) => (
-                  <p key={index} className="mt-1">• {line.trim()}</p>
-                ))}
+                <ReactMarkdown>{report}</ReactMarkdown>
               </AlertDescription>
             </Alert>
           )}
         </CardContent>
       </Card>
 
-      {/* 📈 Chart.js Visualization */}
+      {/* Chart.js Visualization */}
       {chartData && (
         <Card className="max-w-3xl mx-auto shadow-md mt-6 bg-white border border-gray-200">
           <CardHeader className="text-center">

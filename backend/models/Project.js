@@ -65,6 +65,10 @@ const ProjectSchema = mongoose.Schema({
     enum:['small','medium','large'],
     default:'medium'
   },
+  requests:{
+    type: Array,
+    default:[]
+  },
   createdAt: {
     type: Date,
     default: Date.now,

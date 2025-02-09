@@ -162,3 +162,32 @@ export const getProject=async (req,res)=>{
     });
   }
 }
+
+
+export const requestProject=async(req,res)=>{
+  console.log("requestProject");
+  const {projectId}=req.body;
+  console.log(req.body);
+  try {
+    const currUser=await User.findById(req.user.id);
+   
+    const updatedProject = await Project.findByIdAndUpdate(
+      projectId,
+      { $push: { requests:req.user.id } },
+      { new: true }
+    );
+    
+    sendMail(currUser.email,"Request sent successfully");
+    res.json({
+      success: true,
+      project: updatedProject,
+      message: "Request sent successfully",
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+}

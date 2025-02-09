@@ -1,4 +1,4 @@
-import { getProject } from "../../components/redux/projectSlice";
+import { getProject, requestProject } from "../../components/redux/projectSlice";
 import { useEffect, useState } from "react"; 
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link } from "react-router-dom";
@@ -6,6 +6,8 @@ import Map, { Marker } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { getUser } from "../../components/redux/authSlice";
 import io from "socket.io-client";
+import axios from "axios";
+import { toast } from "sonner";
 
 const socket = io("http://localhost:8000");
 const defaultCenter = { lat: 20.5937, lng: 78.9629 }; // Default India center
@@ -17,32 +19,47 @@ function ProjectDetail() {
     const dispatch = useDispatch();
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState("");
+    
+
+    const handleRequest=async(req,res)=>{
+        // API call to request for project (backend implementation needed)
+        dispatch(requestProject(
+            project._id,
+           
+        ))
+        .then((data)=>{
+            toast.success("Project requested successfully");
+        })
+        // Handle request response (backend implementation needed)
+
+
+
+        // Example response
+        res.json({ success: true, project });
+    }
 
     useEffect(() => {
         dispatch(getProject(projectId));
         dispatch(getUser(user.id));
-        dispatch(getProject(projectId));
-    
+
         const fetchMessages = async () => {
             try {
                 const response = await fetch(`http://localhost:8000/api/chat/${projectId}`);
                 const data = await response.json();
-                console.log("✅ Parsed JSON:", data);
-                setMessages(Array.isArray(data) ? data : []);  // Ensure messages is always an array
+                setMessages(Array.isArray(data) ? data : []);
             } catch (error) {
                 console.error("❌ Error fetching messages:", error);
-                setMessages([]);  // Prevents null issues
+                setMessages([]);
             }
         };
-    
+
         fetchMessages();
     
         socket.emit("joinProject", projectId);
         socket.on("newMessage", (message) => {
-            console.log("📩 Received new message:", message);
-            setMessages((prevMessages = []) => [...prevMessages, message]); // Ensure prevMessages is always an array
+            setMessages((prevMessages = []) => [...prevMessages, message]);
         });
-    
+
         return () => {
             socket.off("newMessage");
         };
@@ -55,45 +72,35 @@ function ProjectDetail() {
         }
     };
 
-    useEffect(() => {
-        // Kommunicate Chatbot Integration
-        (function (d, m) {
-            var kommunicateSettings = {
-                "appId": "d560ccd17d1c66d340768072a8a76192", // Your Kommunicate App ID
-                "botIds": ["mybot-8c1bc"],
-                "assignee": "mybot-8c1bc",
-                "popupWidget": true, // Open chatbot as a popup
-                "automaticChatOpenOnNavigation": true
-            };
+    const joinProject = () => {
+        // API call to join the project (backend implementation needed)
+        console.log("User joining project...");
+    };
 
-            var s = document.createElement("script");
-            s.type = "text/javascript";
-            s.async = true;
-            s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
-            var h = document.getElementsByTagName("head")[0];
-            h.appendChild(s);
-            window.kommunicate = m;
-            m._globals = kommunicateSettings;
-        })(document, window.kommunicate || {});
-    }, []); // Runs only once when the component mounts
-
-    console.log(user);
-    console.log(project);
     if (isLoading) return <h1 className="text-center text-2xl font-bold text-gray-700">Loading...</h1>;
 
     const latitude = parseFloat(project?.location?.coordinates?.lat || defaultCenter.lat);
     const longitude = parseFloat(project?.location?.coordinates?.lng || defaultCenter.lng);
+    
+    // Check if user is a member of the project
+    const isMember = project?.members?.some(memberId => memberId === user._id);
 
     return (
         project && (
-            <div className="flex h-screen p-6 bg-gray-100 gap-6 ">
+            <div className="flex h-screen p-6 bg-gray-100">
                 {/* Left Side: Project Details */}
                 <div className="w-2/3 bg-white p-6 shadow-md rounded-lg flex flex-col">
                     <h2 className="text-4xl font-extrabold text-gray-900 mb-4 flex justify-between items-center">
                         {project.title}
+                        <div className="flex flex-row gap-2">
                         <button className="bg-green-600 hover:bg-green-700 text-white text-lg font-semibold px-6 py-3 rounded-xl shadow-lg transition-all duration-300">
                             <Link to={`/donations`}>Contribute</Link>
                         </button>
+                        {
+                            user && user.role === "gov_official" && project && project.level === "large" && (
+                                <button onClick={handleRequest} className="bg-green-600 hover:bg-green-700 text-white text-lg font-semibold px-6 py-3 rounded-xl shadow-lg transition-all duration-300 ">Request to Assigin</button>)
+                        }
+                        </div>
                     </h2>
                     <p className="text-lg text-gray-700 italic border-l-4 border-emerald-500 pl-4">{project.description}</p>
 
@@ -105,12 +112,6 @@ function ProjectDetail() {
                         />
                     ) : (
                         <p className="text-gray-500 mt-6">No images available</p>
-                    )}
-
-                    {user && user.role === "gov_official" && project && project.level === "large" && (
-                        <div>
-                            <button className="bg-green-400 p-3">Request to Assign</button>
-                        </div>
                     )}
 
                     {/* Information Grid */}
@@ -147,7 +148,7 @@ function ProjectDetail() {
                                 zoom: 12,
                             }}
                             style={{ width: "100%", height: "350px" }}
-                            mapboxAccessToken="YOUR_MAPBOX_ACCESS_TOKEN"
+                            mapboxAccessToken="pk.eyJ1Ijoic2lyaWRldm9qdSIsImEiOiJjbHloZGdqYjIwMzVjMmtzYXowNjNzajRtIn0.5_fULxohRjzyjl9cKOL_mQ"
                             mapStyle="mapbox://styles/mapbox/streets-v11"
                         >
                             <Marker longitude={longitude} latitude={latitude} color="red" />
@@ -155,37 +156,62 @@ function ProjectDetail() {
                     </div >
                 </div >
 
-                {/* Right Side: Chat Section */}
-                < div className="w-1/3 p-6 bg-gradient-to-r from-emerald-600 to-teal-600 text-white flex flex-col rounded-lg shadow-lg" >
-                    <h2 className="text-2xl font-bold mb-4">Chat</h2>
-                    <div className="h-64 overflow-y-auto bg-white text-black p-2 rounded-md shadow-inner">
-                        {messages.length > 0 ? (
-                            messages.map((msg, index) => (
-                                <div key={index} className="mb-2 p-2 border-b border-gray-300">
-                                    <strong>{msg.sender_name || "Unknown"}:</strong> {msg.text}
-                                </div>
-                            ))
-                        ) : (
-                            <p className="text-gray-500">No messages yet</p>
-                        )}
-                    </div>
+                {/* Right Side: Chat Section / Join Option */}
+                <div className="w-1/3 p-6 bg-gradient-to-r from-emerald-600 to-teal-600 text-white flex flex-col rounded-lg shadow-lg">
+                    {
+                        project.requests&&(
+                            project.requests.map((id)=>{
+                                return (
+                                    <div key={id} className="mb-2 p-2 border-b border-gray-300">
+                                        <strong>Request from {id|| "Unknown"}:</strong> Requested to be assigned to the project.<br></br>
+                                        <button onClick={()=>handleRequest(id)} className="ml-2 bg-green-500 px-4 py-2 rounded-lg">Accept</button>
+                                        <button onClick={()=>handleRequest(id)} className="ml-2 bg-red-500 px-4 py-2 rounded-lg">Decline</button>
+                                    </div>
+                                )
+                            })
+                        )
+                    }
+                    <h2 className="text-2xl font-bold mb-4">{isMember ? "Chat" : "Join Project"}</h2>
 
-                    <div className="mt-4 flex">
-                        <input
-                            type="text"
-                            placeholder="Type a message..."
-                            value={newMessage}
-                            onChange={(e) => setNewMessage(e.target.value)}
-                            className="w-full p-2 rounded-lg text-gray-800"
-                        />
-                        <button
-                            className="ml-2 bg-green-500 px-4 py-2 rounded-lg"
-                            onClick={sendMessage}
+                    {isMember ? (
+                        <>
+                            <div className="h-64 overflow-y-auto bg-white text-black p-2 rounded-md shadow-inner">
+                                {messages.length > 0 ? (
+                                    messages.map((msg, index) => (
+                                        <div key={index} className="mb-2 p-2 border-b border-gray-300">
+                                            <strong>{msg.sender_name || "Unknown"}:</strong> {msg.text}
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p className="text-gray-500">No messages yet</p>
+                                )}
+                            </div>
+
+                            <div className="mt-4 flex">
+                                <input
+                                    type="text"
+                                    placeholder="Type a message..."
+                                    value={newMessage}
+                                    onChange={(e) => setNewMessage(e.target.value)}
+                                    className="w-full p-2 rounded-lg text-gray-800"
+                                />
+                                <button
+                                    className="ml-2 bg-green-500 px-4 py-2 rounded-lg"
+                                    onClick={sendMessage}
+                                >
+                                    Send
+                                </button>
+                            </div>
+                        </>
+                    ) : (
+                        <button 
+                            onClick={joinProject} 
+                            className="mt-6 bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-3 rounded-lg font-semibold shadow-lg transition-all duration-300"
                         >
-                            Send
+                            Join This Project
                         </button>
-                    </div>
-                </div >
+                    )}
+                </div>
             </div >
         )
     );

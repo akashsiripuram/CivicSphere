@@ -55,7 +55,7 @@ function App() {
               <Route path="project/:id" element={<ProjectDetail />} />
               <Route path="donations" element={<Donation/>} />
               <Route path="emergency" element={<Emergency/>}/>
-              <Route path="/regional-planning" element={<RegionalPlanning />} />
+              <Route path="regional-planning" element={<RegionalPlanning />} />
             </Route>
           )
         }

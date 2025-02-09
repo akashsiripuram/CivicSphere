@@ -35,6 +35,13 @@ export const getProject=createAsyncThunk("/project/get",async(projectId)=>{
     })
     return response.data;
 })
+export const requestProject = createAsyncThunk("/project/request", async (projectId,userId)=>{
+    const response=await axios.post(`http://localhost:8000/api/project/request`,{projectId,userId}, {
+        withCredentials: true,
+    })
+    return response.data;
+})
+
 
 const projectSlice = createSlice({
     name: "project",
@@ -81,6 +88,21 @@ const projectSlice = createSlice({
             .addCase(getProject.rejected,(state)=>{
                 state.isLoading=false;
                 
+            })
+            .addCase(requestProject.rejected,(state,action)=>{
+                console.log("Failed to request project",action.error);
+                state.isLoading=false;
+            })
+            .addCase(requestProject.fulfilled,(state,action)=>{
+                state.isLoading=false;
+                console.log("Project requested successfully",action.payload);
+                state.projects=state.projects.map(project=>
+                    project._id === action.payload._id? {...project, requested: true} : project
+                );
+                state.project=action.payload.project;
+            })
+            .addCase(requestProject.pending,(state)=>{
+                state.isLoading=true;
             })
     }
 });
