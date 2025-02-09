@@ -212,18 +212,18 @@ function Project() {
   const [searchTerm, setSearchTerm] = useState("");
   const { isAuthenticated, user } = useSelector((state) => state.auth);
 
-  const handleJoin = (projectId,project) => {
-    
+  const handleJoin = (projectId, project) => {
+
     if (!user || project.members.includes(user.id)) {
       toast.info("You have already joined this project");
       return;
     }
-  
+
     dispatch(joinProject(projectId))
       .then(() => toast.success("Joined project"))
       .catch(() => toast.error("Failed to join project"));
   };
-  
+
 
   useEffect(() => {
     dispatch(fetchProjects());
@@ -232,43 +232,43 @@ function Project() {
   // Mock additional projects for demonstration
   const allProjects = projects
     ? [
-        ...projects,
-        {
-          _id: "2",
-          title: "Solar Power Initiative",
-          description: "Bringing renewable solar energy to urban communities.",
-          category: "solar",
-          fundingGoal: 75000,
-          members: ["1", "2", "3"],
-          startDate: "2025-03-01T00:00:00.000Z",
-          endDate: "2025-08-01T00:00:00.000Z",
-          status: "active",
-        },
-        {
-          _id: "3",
-          title: "Urban Forest Project",
-          description:
-            "Creating green spaces in city centers to improve air quality.",
-          category: "forest",
-          fundingGoal: 30000,
-          members: ["1", "2"],
-          startDate: "2025-04-01T00:00:00.000Z",
-          endDate: "2025-07-01T00:00:00.000Z",
-          status: "active",
-        },
-        {
-          _id: "4",
-          title: "Zero Waste Program",
-          description:
-            "Implementing comprehensive recycling and waste reduction systems.",
-          category: "waste",
-          fundingGoal: 45000,
-          members: ["1", "2", "3", "4"],
-          startDate: "2025-05-01T00:00:00.000Z",
-          endDate: "2025-09-01T00:00:00.000Z",
-          status: "active",
-        },
-      ]
+      ...projects,
+      {
+        _id: "2",
+        title: "Solar Power Initiative",
+        description: "Bringing renewable solar energy to urban communities.",
+        category: "solar",
+        fundingGoal: 75000,
+        members: ["1", "2", "3"],
+        startDate: "2025-03-01T00:00:00.000Z",
+        endDate: "2025-08-01T00:00:00.000Z",
+        status: "active",
+      },
+      {
+        _id: "3",
+        title: "Urban Forest Project",
+        description:
+          "Creating green spaces in city centers to improve air quality.",
+        category: "forest",
+        fundingGoal: 30000,
+        members: ["1", "2"],
+        startDate: "2025-04-01T00:00:00.000Z",
+        endDate: "2025-07-01T00:00:00.000Z",
+        status: "active",
+      },
+      {
+        _id: "4",
+        title: "Zero Waste Program",
+        description:
+          "Implementing comprehensive recycling and waste reduction systems.",
+        category: "waste",
+        fundingGoal: 45000,
+        members: ["1", "2", "3", "4"],
+        startDate: "2025-05-01T00:00:00.000Z",
+        endDate: "2025-09-01T00:00:00.000Z",
+        status: "active",
+      },
+    ]
     : [];
 
   const filteredProjects = allProjects.filter((project) => {
@@ -305,7 +305,7 @@ function Project() {
       </div>
     );
   }
-  
+
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-blue-50">
@@ -334,11 +334,10 @@ function Project() {
               <button
                 key={category}
                 onClick={() => setFilter(category)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                  filter === category
-                    ? "bg-green-500 text-white"
-                    : "bg-white text-gray-600 hover:bg-green-100"
-                }`}>
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${filter === category
+                  ? "bg-green-500 text-white"
+                  : "bg-white text-gray-600 hover:bg-green-100"
+                  }`}>
                 {category.charAt(0).toUpperCase() + category.slice(1)}
               </button>
             ))}
@@ -369,7 +368,7 @@ function Project() {
 
               <div className="p-6">
                 <h2 className="text-xl font-bold text-gray-800 mb-3">
-                <Link to={`/project/${project._id}`}>{project.title}</Link>
+                  <Link to={`/project/${project._id}`}>{project.title}</Link>
                 </h2>
 
                 <p className="text-gray-600 mb-4 line-clamp-2">
@@ -423,7 +422,7 @@ function Project() {
                 <div className="flex flex-row justify-between space-x-3">
                   <button
                     className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
-                    onClick={() => handleJoin(project._id,project)}>
+                    onClick={() => handleJoin(project._id, project)}>
                     {project.members.find((member) => member === user.id) ? "Joined" : "Join Project"}
 
                     <Target className="w-4 h-4" />

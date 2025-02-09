@@ -65,7 +65,7 @@ const AuthPage = () => {
 
 
     return (
-        <div id="container" className="container-auth ">
+        <div id="container" className="container-auth">
             <div className="row">
                 {/* Sign Up Form */}
                 <div className="col align-items-center flex-col sign-up">
@@ -112,7 +112,7 @@ const AuthPage = () => {
                                     <option value="gov_official">Government Official</option>
                                 </select>
                             </div>
-                            <button type="submit">
+                            <button type="submit" c className="signUp-btn">
                                 Sign up
                             </button>
                             <p>
@@ -149,7 +149,7 @@ const AuthPage = () => {
                                     required
                                 />
                             </div>
-                            <button type="submit">
+                            <button type="submit" className="signIn-btn">
                                 Sign in
                             </button>
                             <p>
