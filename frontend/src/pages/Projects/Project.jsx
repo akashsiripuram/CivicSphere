@@ -76,7 +76,7 @@ function CreateProjectModal() {
     e.preventDefault();
     setFormData({...formData,images:imgUrl});
     console.log(formData);
-    console.log(imgUrl);
+    // console.log(imgUrl);
     dispatch(addProject(formData)).then(() => {
       toast.success("Project added successfully");
     });
@@ -99,8 +99,7 @@ function CreateProjectModal() {
         }
       );
       const uploadedUrl = response.data; // Assuming the API returns the URL directly in response.data
-      setImgUrl(uploadedUrl);
-      // console.log(formData.image);
+     setFormData({...formData,images:uploadedUrl});
       toast.success("File uploaded successfully!");
     } catch (err) {
       console.error(err);
@@ -274,6 +273,7 @@ function Project() {
   useEffect(() => {
     dispatch(fetchProjects());
   }, []);
+ 
 
   // Mock additional projects for demonstration
   const allProjects = projects;
@@ -358,7 +358,7 @@ function Project() {
               className="bg-white rounded-xl shadow-xl overflow-hidden transform hover:scale-[1.02] transition-all duration-300">
               <div className="relative h-48">
                 <img
-                  src={projectImages[project.category] || projectImages.water}
+                  src={project.images[0] || projectImages.water}
                   alt={project.title}
                   className="w-full h-full object-cover"
                   
@@ -431,7 +431,7 @@ function Project() {
                   <button
                     className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
                     onClick={() => handleJoin(project._id, project)}>
-                    {project.members.find((member) => member === user.id) ? "Joined" : "Join Project"}
+                    {(project.members&&project.members.find((member) => member === user.id) )? "Joined" : "Join Project"}
 
                     <Target className="w-4 h-4" />
                   </button>

@@ -36,8 +36,8 @@ const resourceSchema=mongoose.Schema({
         default:0
     },
     images:{
-        type: Array,
-        default:[]
+        type: String,
+        default:""
     },
     description:{
         type: String,

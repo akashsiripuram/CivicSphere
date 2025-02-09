@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+
 const userSchema=mongoose.Schema({
     name:{
         type:String,
@@ -32,6 +33,16 @@ const userSchema=mongoose.Schema({
     badges:{
         type:Array,
         default:[]
+    },
+    assignedTo:{
+        role:{
+            type:String,
+            enum:['community_leader','gov_official']
+        },
+        userId:{
+            type: mongoose.Schema.ObjectId,
+            ref: 'User'
+        }
     },
     createdAt:{
         type:Date,
