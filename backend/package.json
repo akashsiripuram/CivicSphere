@@ -26,6 +26,7 @@
     "node-mailer": "^0.1.1",
     "nodemailer": "^6.10.0",
     "nodemon": "^3.1.9",
-    "razorpay": "^2.9.5"
+    "razorpay": "^2.9.5",
+    "socket.io": "^4.8.1"
   }
 }
