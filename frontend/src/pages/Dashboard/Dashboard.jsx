@@ -49,10 +49,10 @@ function Dashboard() {
   }
   console.log(user);
 
-  const createdProjects = projects.filter(project => project.createdBy === user.id);
-  const joinedProjects = projects.filter(project => project.members.includes(user.id));
-  const reportedIssues = issues.filter(issue => issue.createdBy === user.id);
-  const assignedIssues = issues.filter(issue => issue.assignedTo?.includes(user.id));
+  const createdProjects = projects.filter(project => project.createdBy === user._id);
+  const joinedProjects = projects.filter(project => project.members.includes(user._id));
+  const reportedIssues = issues.filter(issue => issue.createdBy === user._id);
+  const assignedIssues = issues.filter(issue => issue.assignedTo?.includes(user._id));
 
   const userPoints = 120;
   const userBadges = ["Community Helper", "Sustainability Advocate"];
