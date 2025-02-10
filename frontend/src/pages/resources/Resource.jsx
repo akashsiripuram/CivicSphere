@@ -59,7 +59,7 @@ function Resource() {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      const uploadedUrl = response.data; // Assuming the API returns the URL directly in response.data
+      const uploadedUrl = response.data.fileUrl; // Assuming the API returns the URL directly in response.data
       setNewResource({ ...newResource, images: uploadedUrl });
       toast.success("File uploaded successfully!");
     } catch (err) {

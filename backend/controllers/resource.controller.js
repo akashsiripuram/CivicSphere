@@ -29,6 +29,7 @@ async function updatePoints(userId, pointsToAdd, reason) {
 
 //resouce adding
 export const addResource = async (req, res) => {
+  console.log("goieroig");
   const {
     name,
     category,
