@@ -25,54 +25,56 @@ const cards = [
   {
     title: "Smart Cities",
     description: "Innovative urban planning for a sustainable future.",
-    image: "https://via.placeholder.com/300",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSwz25vEGTqtU6uvqzOFA-rPUjkh-eo1z47_0FWk8U2uY_xJ0pBKtGxHw3N8ekRQOJesE&usqp=CAU",
   },
   {
     title: "Renewable Energy",
     description: "Harnessing clean energy for a greener tomorrow.",
-    image: "https://via.placeholder.com/300",
+    image: "https://static.vecteezy.com/system/resources/thumbnails/029/597/231/small/smconnect-smart-digital-city-ai-generated-photo.jpg",
   },
   {
     title: "Eco-Friendly Transport",
     description: "Sustainable mobility solutions for urban areas.",
-    image: "https://via.placeholder.com/300",
+    image: "https://media.istockphoto.com/id/1430212440/vector/green-industry-and-alternative-renewable-energy-green-eco-friendly-cityscape-background.jpg?s=612x612&w=0&k=20&c=8TgK7Wy2UwJ9rtYLSob4dFFfKq7gPCv7xTbwknEaRc0=",
   },
   {
     title: "Green Buildings",
     description: "Energy-efficient and environmentally friendly structures.",
-    image: "https://via.placeholder.com/300",
+    image: "https://media.istockphoto.com/id/1319911927/vector/green-energy-and-eco-city-background-ecology-and-environment-conservation-resource.jpg?s=612x612&w=0&k=20&c=NBxISKVw4zh-g7BZbGWhIc83XT3ivWzUISzBuBJWbUs=",
   },
   {
     title: "Waste Management",
     description: "Effective waste disposal and recycling systems.",
-    image: "https://via.placeholder.com/300",
+    image: "https://media.istockphoto.com/id/1318747527/vector/green-eco-city-background-ecology-and-environment-conservation-resource-sustainable-concept.jpg?s=612x612&w=0&k=20&c=IzAR7Dp_QMxv0DCFWZkO_BpF0g-2LBAUZxZCcMLIOKc=",
   },
 ];
 
 const AppleCardsCarousel = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
   const carouselRef = useRef(null);
 
   // Duplicate cards to create a seamless loop
   const duplicatedCards = [...cards, ...cards, ...cards];
 
-  const handleScroll = () => {
-    if (carouselRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
-      const maxScroll = scrollWidth - clientWidth;
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    let animationFrameId;
 
-      // Reset scroll position to create a seamless loop
-      if (scrollLeft >= maxScroll / 2) {
-        carouselRef.current.scrollLeft = scrollLeft - maxScroll / 2;
-      } else if (scrollLeft === 0) {
-        carouselRef.current.scrollLeft = maxScroll / 2;
+    const scrollCarousel = () => {
+      if (carousel) {
+        carousel.scrollLeft += 1; // Move 1px per frame (approx 1cm per second at 60fps)
+        if (carousel.scrollLeft >= carousel.scrollWidth / 2) {
+          carousel.scrollLeft = 0; // Reset to create a seamless loop
+        }
       }
+      animationFrameId = requestAnimationFrame(scrollCarousel);
+    };
 
-      // Update current index based on scroll position
-      const cardWidth = carouselRef.current.scrollWidth / duplicatedCards.length;
-      setCurrentIndex(Math.round(carouselRef.current.scrollLeft / cardWidth) % cards.length);
-    }
-  };
+    scrollCarousel();
+
+    return () => {
+      cancelAnimationFrame(animationFrameId); // Cleanup animation frame
+    };
+  }, []);
 
   return (
     <motion.div
@@ -83,15 +85,14 @@ const AppleCardsCarousel = () => {
       viewport={{ once: true }}
     >
       <div
-        className="flex overflow-x-scroll snap-x snap-mandatory scroll-smooth"
+        className="flex overflow-x-hidden"
         ref={carouselRef}
-        onScroll={handleScroll}
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }} // Hide scrollbar
       >
         {duplicatedCards.map((card, index) => (
           <motion.div
             key={index}
-            className="min-w-[300px] bg-white shadow-lg rounded-xl p-4 flex flex-col items-center mx-2 snap-start"
+            className="min-w-[300px] bg-white shadow-lg rounded-xl p-4 flex flex-col items-center mx-2"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
@@ -112,7 +113,6 @@ const techElements = [
   { icon: <SiNodedotjs size={40} />, name: "Node.js" },
   { icon: <SiExpress size={40} />, name: "Express.js" },
   { icon: <SiMongodb size={40} />, name: "MongoDB" },
- 
   { icon: <GiArtificialIntelligence size={40} />, name: "Gemini" },
   { icon: <RiPaypalFill size={40} />, name: "Razorpay" },
   { icon: <SiGooglemaps size={40} />, name: "Google Maps" },
@@ -175,39 +175,232 @@ function Home() {
 
       <AppleCardsCarousel />
 
-      {/* Goals Section with Divider */}
-      <div className="flex w-full p-10 mt-16">
-        {/* Left Side */}
-        <motion.div className="w-1/2 pr-8 space-y-8" variants={fadeIn} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-          <h3 className="text-2xl font-extrabold text-emerald-700">Goal 1: No Poverty</h3>
-          <p className="text-lg text-emerald-700">"End poverty in all its forms everywhere."</p>
-          <h3 className="text-2xl font-extrabold text-emerald-700">Goal 2: Zero Hunger</h3>
-          <p className="text-lg text-emerald-700">"End hunger, achieve food security and improve nutrition."</p>
+      {/*Goals Section with Subtle Green Background and Classy Motion*/}
+      <div className="flex flex-col items-center w-full p-10 mt-16">
+        {/* Title */}
+        <motion.h2
+          className="text-4xl font-extrabold text-emerald-700 mb-8"
+          variants={fadeIn}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          SDG 11 Goals
+        </motion.h2>
+
+        {/* Cards Grid */}
+        <motion.div
+          className="grid grid-cols-3 gap-8 w-full max-w-6xl mb-8"
+          variants={fadeIn}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          {/* Card 1: Projects */}
+          <motion.div
+            className="relative rounded-xl p-6 flex flex-col items-center text-center overflow-hidden"
+            whileHover={{ rotateY: 10, rotateX: 10, scale: 1.05, transition: { duration: 0.5 } }}
+            style={{ transformStyle: "preserve-3d" }}
+          >
+            {/* Subtle Green Animated Background */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-emerald-50 to-emerald-100 opacity-80"
+              animate={{
+                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+              }}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+              style={{
+                backgroundSize: "200% 200%",
+                zIndex: -1,
+              }}
+            />
+            <h3 className="text-2xl font-extrabold text-emerald-700 mb-4">Projects</h3>
+            <motion.p
+              className="text-lg text-emerald-700"
+              animate={{
+                y: [0, -5, 0],
+                opacity: [0.9, 1, 0.9],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              "Develop sustainable urban projects to improve infrastructure, housing, and public spaces."
+            </motion.p>
+          </motion.div>
+
+          {/* Card 2: Resources */}
+          <motion.div
+            className="relative rounded-xl p-6 flex flex-col items-center text-center overflow-hidden"
+            whileHover={{ rotateY: 10, rotateX: 10, scale: 1.05, transition: { duration: 0.5 } }}
+            style={{ transformStyle: "preserve-3d" }}
+          >
+            {/* Subtle Green Animated Background */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-emerald-50 to-emerald-100 opacity-80"
+              animate={{
+                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+              }}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+              style={{
+                backgroundSize: "200% 200%",
+                zIndex: -1,
+              }}
+            />
+            <h3 className="text-2xl font-extrabold text-emerald-700 mb-4">Resources</h3>
+            <motion.p
+              className="text-lg text-emerald-700"
+              animate={{
+                y: [0, -5, 0],
+                opacity: [0.9, 1, 0.9],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              "Optimize resource allocation to ensure equitable access to water, energy, and sanitation."
+            </motion.p>
+          </motion.div>
+
+          {/* Card 3: Issues */}
+          <motion.div
+            className="relative rounded-xl p-6 flex flex-col items-center text-center overflow-hidden"
+            whileHover={{ rotateY: 10, rotateX: 10, scale: 1.05, transition: { duration: 0.5 } }}
+            style={{ transformStyle: "preserve-3d" }}
+          >
+            {/* Subtle Green Animated Background */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-emerald-50 to-emerald-100 opacity-80"
+              animate={{
+                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+              }}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+              style={{
+                backgroundSize: "200% 200%",
+                zIndex: -1,
+              }}
+            />
+            <h3 className="text-2xl font-extrabold text-emerald-700 mb-4">Issues</h3>
+            <motion.p
+              className="text-lg text-emerald-700"
+              animate={{
+                y: [0, -5, 0],
+                opacity: [0.9, 1, 0.9],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              "Address urban challenges like pollution, congestion, and inadequate housing."
+            </motion.p>
+          </motion.div>
         </motion.div>
 
-        {/* Divider */}
-        <div className="w-px bg-emerald-700 mx-8"></div>
+        {/* Second Row */}
+        <motion.div
+          className="grid grid-cols-2 gap-8 w-full max-w-4xl"
+          variants={fadeIn}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          {/* Card 4: Emergencies */}
+          <motion.div
+            className="relative rounded-xl p-6 flex flex-col items-center text-center overflow-hidden"
+            whileHover={{ rotateY: 10, rotateX: 10, scale: 1.05, transition: { duration: 0.5 } }}
+            style={{ transformStyle: "preserve-3d" }}
+          >
+            {/* Subtle Green Animated Background */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-emerald-50 to-emerald-100 opacity-80"
+              animate={{
+                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+              }}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+              style={{
+                backgroundSize: "200% 200%",
+                zIndex: -1,
+              }}
+            />
+            <h3 className="text-2xl font-extrabold text-emerald-700 mb-4">Emergencies</h3>
+            <motion.p
+              className="text-lg text-emerald-700"
+              animate={{
+                y: [0, -5, 0],
+                opacity: [0.9, 1, 0.9],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              "Enhance disaster preparedness and resilience to protect urban populations."
+            </motion.p>
+          </motion.div>
 
-        {/* Right Side */}
-        <motion.div className="w-1/2 pl-8 space-y-8" variants={fadeIn} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-          <h3 className="text-2xl font-extrabold text-emerald-700">Goal 3: Good Health and Well-Being</h3>
-          <p className="text-lg text-emerald-700">"Ensure healthy lives and promote well-being for all at all ages."</p>
-          <h3 className="text-2xl font-extrabold text-emerald-700">Goal 4: Quality Education</h3>
-          <p className="text-lg text-emerald-700">"Ensure inclusive and equitable quality education and lifelong learning."</p>
+          {/* Card 5: Regional Development */}
+          <motion.div
+            className="relative rounded-xl p-6 flex flex-col items-center text-center overflow-hidden"
+            whileHover={{ rotateY: 10, rotateX: 10, scale: 1.05, transition: { duration: 0.5 } }}
+            style={{ transformStyle: "preserve-3d" }}
+          >
+            {/* Subtle Green Animated Background */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-emerald-50 to-emerald-100 opacity-80"
+              animate={{
+                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+              }}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+              style={{
+                backgroundSize: "200% 200%",
+                zIndex: -1,
+              }}
+            />
+            <h3 className="text-2xl font-extrabold text-emerald-700 mb-4">Regional Development</h3>
+            <motion.p
+              className="text-lg text-emerald-700"
+              animate={{
+                y: [0, -5, 0],
+                opacity: [0.9, 1, 0.9],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              "Promote balanced regional development to reduce inequalities between urban and rural areas."
+            </motion.p>
+          </motion.div>
         </motion.div>
       </div>
-
-      {/* Tech Elements Section */}
-      <motion.div className="w-full p-10 mt-16 bg-white" initial={{ opacity: 0 }} whileInView={{ opacity: 1, transition: { duration: 1 } }} viewport={{ once: true }}>
-        <div className="flex justify-center space-x-8">
-          {techElements.map((tech, index) => (
-            <div key={index} className="flex flex-col items-center">
-              <div className="text-emerald-700">{tech.icon}</div>
-              <p className="text-sm text-emerald-700 mt-2">{tech.name}</p>
-            </div>
-          ))}
-        </div>
-      </motion.div>
 
       {/* Footer */}
       <motion.footer className="bg-emerald-700 text-white py-8 mt-16" initial={{ opacity: 0 }} whileInView={{ opacity: 1, transition: { duration: 1 } }} viewport={{ once: true }}>

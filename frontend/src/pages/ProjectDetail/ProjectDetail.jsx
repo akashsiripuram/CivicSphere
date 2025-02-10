@@ -22,7 +22,8 @@ function ProjectDetail() {
   const dispatch = useDispatch();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-
+//   console.log(user._id===project.createdBy);
+console.log(project);
   const handleRequest = async (req, res) => {
     // API call to request for project (backend implementation needed)
     dispatch(requestProject(project._id)).then((data) => {
@@ -184,25 +185,27 @@ function ProjectDetail() {
         </div>
 
         {/* Right Side: Chat Section / Join Option */}
-        <div className="w-1/3 p-6 bg-gradient-to-r from-emerald-600 to-teal-600 text-white flex flex-col rounded-lg shadow-lg">
+        <div className="w-1/3 h-[fit-content] p-6 bg-gradient-to-r from-emerald-600 to-teal-600 text-white flex flex-col rounded-lg shadow-lg">
           {project.requests &&
             project.requests
-              .filter((id) => id !== user._id) // Exclude current user's request
+              .filter((id) => id !== user._id) 
               .map((id) => (
                 <div key={id} className="mb-2 p-2 border-b border-gray-300">
                   <strong>Request from {id || "Unknown"}:</strong> Requested to
                   be assigned to the project.
                   <br />
+                 { user._id===project.createdBy&&(
                   <button
                     onClick={() => handleRequest(id)}
                     className="ml-2 bg-green-500 px-4 py-2 rounded-lg">
                     Accept
-                  </button>
+                  </button>)
+} { user._id===project.createdBy&&(
                   <button
                     onClick={() => handleRequest(id)}
                     className="ml-2 bg-red-500 px-4 py-2 rounded-lg">
                     Decline
-                  </button>
+                  </button>)}
                 </div>
               ))}
 
@@ -243,11 +246,11 @@ function ProjectDetail() {
               </div>
             </>
           ) : (
-            <button
+            <div
               onClick={joinProject}
-              className="mt-6 bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-3 rounded-lg font-semibold shadow-lg transition-all duration-300">
-              Join This Project
-            </button>
+              className="mt-6 bg-red-300 text-black px-6 py-3 rounded-lg font-semibold shadow-lg transition-all duration-300">
+              Join to Chat
+            </div>
           )}
         </div>
       </div>
