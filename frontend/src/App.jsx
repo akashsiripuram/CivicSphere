@@ -16,6 +16,7 @@ import ProjectDetail from "./pages/ProjectDetail/ProjectDetail";
 import Donation from "./pages/Donations/Donation";
 import Emergency from "./pages/Emergency/Emergency";
 import RegionalPlanning from "./pages/RegionalPlanning/RegionalPlanning";
+import NotFound from "./pages/NotFound/NotFound";
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
@@ -59,7 +60,7 @@ function App() {
             </Route>
           )
         }
-        <Route path="*" element={<h1>404 Not Found</h1>} />
+        <Route path="*" element={<NotFound/>} />
       </Routes>
     </>
   );

@@ -3,7 +3,8 @@ import Issues from "../models/Issue.js";
 export const reportIssue = async (req, res) => {
   console.log("report");
   try {
-    const { createdBy, issueType, description, location, images, priority } = req.body;
+    const { issueType, description, location, images, priority } = req.body;
+    createdBy=req.user.id;
     console.log("Report")
     const newIssue = new Issues({ createdBy, issueType, description, location, images, priority });
     await newIssue.save();

@@ -75,7 +75,7 @@ function CreateProjectModal() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormData({ ...formData, images: imgUrl });
-
+console.log(formData);
     try {
       // Dispatch action to add project
       const projectResponse = await dispatch(addProject(formData)).unwrap(); // Ensure proper response handling
@@ -119,7 +119,8 @@ function CreateProjectModal() {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      const uploadedUrl = response.data; // Assuming the API returns the URL directly in response.data
+      const uploadedUrl = response.data.fileUrl; // Assuming the API returns the URL directly in response.data
+     
       setFormData({ ...formData, images: uploadedUrl });
       toast.success("File uploaded successfully!");
     } catch (err) {
@@ -147,7 +148,7 @@ function CreateProjectModal() {
             <Label htmlFor="image">Project Image</Label>
             <Input
               id="image"
-              value={formData.images}
+              // value={formData.images}
               // onChange={(e) =>
               //   setFormData({ ...formData, title: e.target.value })
               // }

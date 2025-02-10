@@ -20,7 +20,7 @@ const IssueSchema = new mongoose.Schema(
       type: { type: String, default: "Point" },
       coordinates: { type: [Number], required: true } // [longitude, latitude]
     },
-    images: [{ type: String }], // Store image URLs
+    images: { type: String }, // Store image URLs
     priority: { 
       type: String, 
       enum: ["Low", "Medium", "High", "Critical"], 
