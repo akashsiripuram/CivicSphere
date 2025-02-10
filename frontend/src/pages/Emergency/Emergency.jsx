@@ -179,6 +179,7 @@ function Emergency() {
 
     setFormData({ type: "", latitude: null, longitude: null });
     toast.success("Emergency report submitted.");
+    window.location.reload();
   };
   const riskColors = {
     Low: "bg-green-100 text-green-700",
