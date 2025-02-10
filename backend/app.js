@@ -68,6 +68,8 @@ app.use("/api/payments", paymentRouter);
 app.use("/api/location", locationRouter);
 import chatRouter from "./routes/chat.route.js";  // ✅ Import chat routes
 app.use("/api/chat", chatRouter); 
+// import emergencyRouter from "./routes/emergency.route.js";
+app.use("/api/emergency", emergencyRouter);
 // Start Server
 const PORT = process.env.PORT || 8000;
 server.listen(PORT, () => {

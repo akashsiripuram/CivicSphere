@@ -128,7 +128,21 @@ export const joinProject=async(req,res)=>{
       { $push: { members: req.user.id } },
       { new: true }
     );
-    sendMail(currUser.email);
+    const user=await User.findById(req.user.id);
+    if(fundingGoal<=10000){
+      updatePoints(req.user.id,25,`Points added for creation of ${updatedProject.title}`);
+      user.points+=25;
+    }else if(fundingGoal>=10000&&fundingGoal<=100000){
+      updatePoints(req.user.id,125,`Points added for creation of ${updatedProject.title}`);
+      user.points+=125;
+    }
+    else{
+      updatePoints(req.user.id,250,`Points added for creation of ${updatedProject.title}`);
+      user.points+=250;
+    }
+    await user.save();
+    sendMail(user.email,`Project added successfully and you earned the points of ${user.points}`);
+    // sendMail(currUser.email);
     res.json({
       success: true,
       project: updatedProject,

@@ -8,14 +8,16 @@ const initialState = {
 };
 
 export const getAllEmergencies=createAsyncThunk(
-    "/emergencies",
+    "/emergency",
+    
     async () => {
+        console.log("coming to eme")
         const response = await axios.get("http://localhost:8000/api/emergency");
         return response.data;
     }
 )
 export const addEmergency=createAsyncThunk(
-    "/emergencies/add",
+    "/emergency/add",
     async (formData) => {
         const response = await axios.post("http://localhost:8000/api/emergency/add",formData,
             {

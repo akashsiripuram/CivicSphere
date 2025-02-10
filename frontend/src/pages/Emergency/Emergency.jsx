@@ -165,6 +165,7 @@ function Emergency() {
       toast.error("Please fetch your location.");
       return;
     }
+    console.log(formData);
 
     await dispatch(addEmergency(formData))
       .then((data) => {

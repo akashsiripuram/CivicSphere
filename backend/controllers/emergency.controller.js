@@ -49,6 +49,7 @@ export const addEmergency = async (req, res) => {
 };
 
 export const getAllEmergencies = async (req, res) => {
+  console.log("getAllEmergencies");
   try {
     const emergencies = await Emergency.find();
     return res
