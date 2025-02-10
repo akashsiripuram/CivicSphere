@@ -1,4 +1,5 @@
 import {
+    assignProject,
   getProject,
   requestProject,
 } from "../../components/redux/projectSlice";
@@ -97,7 +98,13 @@ console.log(project);
 
   // Check if user is a member of the project
   const isMember = project?.members?.some((memberId) => memberId === user._id);
+  const handleAssign=(userId)=>{
+    console.log("fobeoibiob",userId);
+    dispatch(assignProject(userId))
+     .then(() => toast.success("Project assigned successfully"))
+     .catch(() => toast.error("Failed to assign project"));
 
+  }
   return (
     project && (
       <div className="flex h-screen p-6 bg-gray-100">
@@ -196,7 +203,7 @@ console.log(project);
                   <br />
                  { user._id===project.createdBy&&(
                   <button
-                    onClick={() => handleRequest(id)}
+                    onClick={() => handleAssign(id)}
                     className="ml-2 bg-green-500 px-4 py-2 rounded-lg">
                     Accept
                   </button>)

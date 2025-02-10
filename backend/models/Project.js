@@ -20,6 +20,10 @@ const ProjectSchema = mongoose.Schema({
    default:"active",
    enum:['active','completed','cancelled']
   },
+  assignedTo:{
+    type: String,
+    
+  },
   startDate:{
     type: Date,
    

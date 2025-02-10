@@ -205,3 +205,37 @@ export const requestProject=async(req,res)=>{
     });
   }
 }
+
+export const assignProject = async (req, res) => {
+  console.log("assignProject");
+  const {  userId } = req.body;
+  const {id}=req.params;
+  console.log(req.body);
+
+  try {
+    const user = await User.findById(userId);
+    
+    const updatedProject = await Project.findByIdAndUpdate(
+      id,
+      { 
+        $push: { assignedTo: userId }, 
+        $pull: { requests: userId } // Remove userId from requests array
+      },
+      { new: true }
+    );
+
+    sendMail(user.email, "Project assigned successfully");
+
+    res.json({
+      success: true,
+      project: updatedProject,
+      message: "Project assigned successfully",
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};

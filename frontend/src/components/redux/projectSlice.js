@@ -42,6 +42,13 @@ export const requestProject = createAsyncThunk("/project/request", async (projec
     return response.data;
 })
 
+export const assignProject = createAsyncThunk("/assign",async (projectId,userId)=>{
+    const response=await axios.post(`http://localhost:8000/api/project/${projectId}/assign`,{userId}, {
+        withCredentials: true,
+    })
+    return response.data;
+});
+
 
 const projectSlice = createSlice({
     name: "project",
