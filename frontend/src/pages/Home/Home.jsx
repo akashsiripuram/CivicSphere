@@ -154,7 +154,7 @@ function Home() {
           </div>
         </motion.div>
         <motion.div className="w-1/2" variants={slideInRight} initial="hidden" animate="visible">
-          <motion.img src={''} alt="Sustainable Development" className="w-full h-full object-cover rounded-full" whileHover={{ scale: 1.05 }} />
+          <motion.img src={'./2.png'} alt="Sustainable Development" className="w-full h-full object-cover rounded-full" whileHover={{ scale: 1.05 }} />
         </motion.div>
       </div>
 
@@ -162,7 +162,7 @@ function Home() {
       <div className="flex items-center justify-between w-full p-10 mt-16">
         <motion.div className="w-1/2 flex justify-center items-center" variants={fadeIn} initial="hidden" whileInView="visible" viewport={{ once: true }}>
           <div className="relative w-96 h-96 bg-emerald-600 rounded-t-full shadow-lg overflow-hidden">
-            <motion.img src={''} alt="Coach or Author" className="w-full h-full object-cover" whileHover={{ scale: 1.05 }} />
+            <motion.img src={'./1.jpg'} alt="Coach or Author" className="w-full h-full object-cover" whileHover={{ scale: 1.05 }} />
           </div>
         </motion.div>
         <motion.div className="w-1/2 ml-4 space-y-4" variants={slideInRight} initial="hidden" whileInView="visible" viewport={{ once: true }}>
