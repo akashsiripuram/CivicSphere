@@ -18,18 +18,13 @@ import { Server } from "socket.io";
 import emergencyRouter from "./routes/emergency.route.js";
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST"],
-  },
-});
+
 
 // Middleware
 app.use(cookieParser());
 const allowedOrigins = [
   "http://localhost:5173", 
-  "https://civic-sphere-backend.vercel.app"
+  "https://civic-sphere-iwnm.vercel.app"
 ];
 
 app.use(
@@ -51,6 +46,12 @@ app.use(express.json());
 
 const upload = multer({ storage: multer.memoryStorage() });
 
+const io = new Server(server, {
+  cors: {
+    origin: allowedOrigins,
+    methods: ["GET", "POST"],
+  },
+});
 // Connect to Database
 connectDb();
 
