@@ -19,12 +19,11 @@ import emergencyRouter from "./routes/emergency.route.js";
 const app = express();
 const server = http.createServer(app);
 
-
 // Middleware
 app.use(cookieParser());
 const allowedOrigins = [
-  "http://localhost:5173", 
-  "https://civic-sphere-iwnm.vercel.app"
+  "http://localhost:5173",
+  "https://civic-sphere-iwnm.vercel.app",
 ];
 
 app.use(
@@ -48,10 +47,12 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
+    origin: ["http://localhost:5173", "https://civic-sphere-iwnm.vercel.app"],
     methods: ["GET", "POST"],
+    credentials: true,
   },
 });
+
 // Connect to Database
 connectDb();
 
@@ -79,8 +80,8 @@ app.use("/api/resources", resourceRouter);
 app.use("/api/issues", issueRouter);
 app.use("/api/payments", paymentRouter);
 app.use("/api/location", locationRouter);
-import chatRouter from "./routes/chat.route.js";  // ✅ Import chat routes
-app.use("/api/chat", chatRouter); 
+import chatRouter from "./routes/chat.route.js"; // ✅ Import chat routes
+app.use("/api/chat", chatRouter);
 // import emergencyRouter from "./routes/emergency.route.js";
 app.use("/api/emergency", emergencyRouter);
 // Start Server
