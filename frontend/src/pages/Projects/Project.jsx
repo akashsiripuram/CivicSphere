@@ -89,7 +89,7 @@ console.log(formData);
 
       // Call location API with projectId and city
       const locationResponse = await fetch(
-        `http://localhost:8000/api/location?projectId=${projectId}&city=${encodeURIComponent(city)}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/location?projectId=${projectId}&city=${encodeURIComponent(city)}`,
         { method: "GET" }
       );
 
@@ -113,7 +113,7 @@ console.log(formData);
 
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/v1/upload`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/upload`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },

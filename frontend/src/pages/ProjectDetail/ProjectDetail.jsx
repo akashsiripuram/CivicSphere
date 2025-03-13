@@ -13,7 +13,7 @@ import io from "socket.io-client";
 import axios from "axios";
 import { toast } from "sonner";
 
-const socket = io("http://localhost:8000");
+const socket = io(`${import.meta.env.VITE_BACKEND_URL}`);
 const defaultCenter = { lat: 20.5937, lng: 78.9629 }; // Default India center
 
 function ProjectDetail() {
@@ -43,7 +43,7 @@ console.log(project);
     const fetchMessages = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/chat/${projectId}`
+          `${import.meta.env.VITE_BACKEND_URL}/api/chat/${projectId}`
         );
         const data = await response.json();
         setMessages(Array.isArray(data) ? data : []);
