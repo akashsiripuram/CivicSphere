@@ -47,7 +47,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173", "https://civic-sphere.vercel.app/"],
+    origin: ["http://localhost:5173", "https://civic-sphere.vercel.app"],
     methods: ["GET", "POST"],
     credentials: true,
   },
