@@ -12,14 +12,14 @@ export const getAllEmergencies=createAsyncThunk(
     
     async () => {
         console.log("coming to eme")
-        const response = await axios.get("http://localhost:8000/api/emergency");
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/emergency`);
         return response.data;
     }
 )
 export const addEmergency=createAsyncThunk(
     "/emergency/add",
     async (formData) => {
-        const response = await axios.post("http://localhost:8000/api/emergency/add",formData,
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/emergency/add`,formData,
             {
                 withCredentials:true
             }

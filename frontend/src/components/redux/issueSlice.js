@@ -8,11 +8,11 @@ const initialState = {
 };
 
 export const fetchIssues = createAsyncThunk("/issues", async () => {
- const response = await axios.get("http://localhost:8000/api/issues/all");
+ const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/issues/all`);
  return response.data;
 });
 const addIssue=createAsyncThunk("/issues/report", async () => {
-    const response = await axios.post("http://localhost:8000/api/issues/report");
+    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/issues/report`);
     return response.data;
 })
 

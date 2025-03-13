@@ -27,14 +27,26 @@ const io = new Server(server, {
 
 // Middleware
 app.use(cookieParser());
+const allowedOrigins = [
+  "http://localhost:5173", 
+  "https://your-production-domain.com"
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
-    methods: "GET, POST, PUT, DELETE, OPTIONS",
-    allowedHeaders: "Content-Type, Authorization, Cache-Control",
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
+    allowedHeaders: "Content-Type,Authorization,Cache-Control",
     credentials: true,
   })
 );
+
 app.use(express.json());
 
 const upload = multer({ storage: multer.memoryStorage() });

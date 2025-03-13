@@ -9,13 +9,13 @@ const initialState = {
 
 // Fetch projects
 export const fetchProjects = createAsyncThunk("/project", async () => {
-    const response = await axios.get("http://localhost:8000/api/project");
+    const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/project`);
     return response.data;
 });
 
 // Add project
 export const addProject = createAsyncThunk("/project/add", async (formData) => {
-    const response = await axios.post("http://localhost:8000/api/project/add", formData, {
+    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/project/add`, formData, {
         withCredentials: true, // Ensure authentication
     });
     return response.data;
@@ -23,27 +23,27 @@ export const addProject = createAsyncThunk("/project/add", async (formData) => {
 
 // Join project
 export const joinProject = createAsyncThunk("/project/join", async (projectId) => {
-    const response = await axios.post(`http://localhost:8000/api/project/${projectId}/join`, {}, {
+    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/project/${projectId}/join`, {}, {
         withCredentials: true,
     });
     return response.data;
 });
 export const getProject=createAsyncThunk("/project/get",async(projectId)=>{
    
-    const response=await axios.get(`http://localhost:8000/api/project/${projectId}`,{
+    const response=await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/project/${projectId}`,{
         withCredentials: true,
     })
     return response.data;
 })
 export const requestProject = createAsyncThunk("/project/request", async (projectId,userId)=>{
-    const response=await axios.post(`http://localhost:8000/api/project/request`,{projectId,userId}, {
+    const response=await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/project/request`,{projectId,userId}, {
         withCredentials: true,
     })
     return response.data;
 })
 
 export const assignProject = createAsyncThunk("/assign",async (projectId,userId)=>{
-    const response=await axios.post(`http://localhost:8000/api/project/${projectId}/assign`,{userId}, {
+    const response=await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/project/${projectId}/assign`,{userId}, {
         withCredentials: true,
     })
     return response.data;

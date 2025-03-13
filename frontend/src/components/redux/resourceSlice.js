@@ -7,11 +7,11 @@ const initialState = {
 };
 
 export const fetchResources = createAsyncThunk("/resources", async () => {
- const response = await axios.get("http://localhost:8000/api/resources");
+ const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/resources`);
  return response.data;
 });
 export const addResouce=createAsyncThunk("/resources/add",async(newResource)=>{
-    const response=await axios.post("http://localhost:8000/api/resources/add",newResource,{
+    const response=await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/resources/add`,newResource,{
         withCredentials:true
     });
     return response.data;
