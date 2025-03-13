@@ -29,7 +29,7 @@ const io = new Server(server, {
 app.use(cookieParser());
 const allowedOrigins = [
   "http://localhost:5173", 
-  "https://your-production-domain.com"
+  "https://civic-sphere-backend.vercel.app"
 ];
 
 app.use(

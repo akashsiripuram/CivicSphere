@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import Layout from "./components/layouts/layout";
+import Layout from "./components/layouts/Layout.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { checkAuth } from "./components/redux/authSlice";
