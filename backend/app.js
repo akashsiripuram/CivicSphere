@@ -22,24 +22,15 @@ const server = http.createServer(app);
 // Middleware
 app.use(cookieParser());
 const allowedOrigins = [
-  "http://localhost:5173",
-  "https://civic-sphere-iwnm.vercel.app",
+  'http://localhost:3000', // Local development
+  'https://civic-sphere.vercel.app' // Deployed site
 ];
-
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    methods: "GET,POST,PUT,DELETE,OPTIONS",
-    allowedHeaders: "Content-Type,Authorization,Cache-Control",
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
 
 app.use(express.json());
 
@@ -47,10 +38,10 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173", "https://civic-sphere.vercel.app"],
-    methods: ["GET", "POST"],
-    credentials: true,
-  },
+    origin: allowedOrigins,
+    methods: ['GET', 'POST'],
+    credentials: true
+  }
 });
 
 // Connect to Database
