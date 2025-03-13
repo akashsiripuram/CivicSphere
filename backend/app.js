@@ -25,12 +25,7 @@ const allowedOrigins = [
   'http://localhost:3000', // Local development
   'https://civic-sphere.vercel.app' // Deployed site
 ];
-app.use(cors({
-  origin: allowedOrigins,
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
-}));
+app.use(cors());
 
 app.use(express.json());
 
@@ -38,7 +33,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
+    origin: "*", // Allow all origins
     methods: ['GET', 'POST'],
     credentials: true
   }
