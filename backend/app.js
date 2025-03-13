@@ -18,6 +18,13 @@ import { Server } from "socket.io";
 import emergencyRouter from "./routes/emergency.route.js";
 const app = express();
 const server = http.createServer(app);
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://civic-sphere.vercel.app");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
+});
+
 
 // Middleware
 app.use(cookieParser());
