@@ -51,9 +51,6 @@ connectDb();
 
 // Initialize Chat Socket
 chatSocket(io);
-app.get('/', (req, res) => {
-  res.send('Hello from Vercel!');
-});
 
 // File Upload Route
 app.post("/api/v1/upload", upload.single("file"), async (req, res) => {
