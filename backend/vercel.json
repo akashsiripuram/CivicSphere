@@ -1,5 +1,9 @@
 {
   "version": 2,
+  "build": {
+    "command": "npm run build"
+  },
+  "start": "npm start",
   "builds": [
     {
       "src": "./app.js",
