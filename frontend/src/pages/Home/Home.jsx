@@ -4,7 +4,7 @@ import { FaLinkedin } from "react-icons/fa"; // LinkedIn icon
 import { SiReact, SiTailwindcss, SiNodedotjs, SiExpress, SiMongodb, SiGooglemaps } from "react-icons/si"; // Icons for technologies
 import { RiPaypalFill } from "react-icons/ri"; // Razorpay icon (using PayPal as a placeholder)
 import { GiArtificialIntelligence } from "react-icons/gi"; // Gemini icon (using AI as a placeholder)
-
+import React from "react";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
