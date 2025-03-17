@@ -18,21 +18,22 @@ import { Server } from "socket.io";
 import emergencyRouter from "./routes/emergency.route.js";
 const app = express();
 const server = http.createServer(app);
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://civic-sphere.vercel.app");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
-});
+
 
 
 // Middleware
-app.use(cookieParser());
 const allowedOrigins = [
-  'http://localhost:5173', // Local development
-  'https://civic-sphere.vercel.app' // Deployed site
+  'http://localhost:5173', 
+  'https://civic-sphere.vercel.app' 
 ];
-app.use(cors());
+
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
 
 app.use(express.json());
 
