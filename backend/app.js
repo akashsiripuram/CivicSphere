@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 // Middleware
 app.use(cookieParser());
 const allowedOrigins = [
-  'http://localhost:3000', // Local development
+  'http://localhost:5173', // Local development
   'https://civic-sphere.vercel.app' // Deployed site
 ];
 app.use(cors());
@@ -40,7 +40,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 const io = new Server(server, {
   cors: {
-    origin: 'https://civic-sphere.vercel.app',
+    origin: allowedOrigins,
     methods: ['GET', 'POST'],
     credentials: true
   }

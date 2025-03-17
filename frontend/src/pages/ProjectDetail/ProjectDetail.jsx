@@ -10,7 +10,6 @@ import Map, { Marker } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { getUser } from "../../components/redux/authSlice";
 import io from "socket.io-client";
-import axios from "axios";
 import { toast } from "sonner";
 
 const socket = io(`${import.meta.env.VITE_BACKEND_URL}`);
@@ -27,7 +26,7 @@ function ProjectDetail() {
 console.log(project);
   const handleRequest = async (req, res) => {
     // API call to request for project (backend implementation needed)
-    dispatch(requestProject(project._id)).then((data) => {
+    dispatch(requestProject(project._id)).then(() => {
       toast.success("Project requested successfully");
     });
     // Handle request response (backend implementation needed)
