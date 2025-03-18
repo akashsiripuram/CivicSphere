@@ -415,8 +415,8 @@ function Home() {
             <a href="https://www.linkedin.com/in/siridevoju/" target="_blank" rel="noopener noreferrer" className="text-lg hover:underline flex items-center">
               <FaLinkedin className="mr-2" /> Siri Devoju
             </a>
-            <a href="https://www.linkedin.com/in/sneha-muthyala-78594a280/" target="_blank" rel="noopener noreferrer" className="text-lg hover:underline flex items-center">
-              <FaLinkedin className="mr-2" /> Sneha Muthyala
+            <a href="https://www.linkedin.com/in/kruthin-reddy/" target="_blank" rel="noopener noreferrer" className="text-lg hover:underline flex items-center">
+              <FaLinkedin className="mr-2" /> Kruthin Reddy
             </a>
           </div>
           <p className="text-sm">© 2025 CivicSphere. All rights reserved.</p>
