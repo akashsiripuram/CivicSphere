@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import { logoutUser } from "../redux/authSlice";
-import { Building2, TreePine, Users2, Lightbulb, LogIn, UserPlus, LogOut } from "lucide-react";
+import { Building2, TreePine,Siren,Locate,Users2, Lightbulb, LogIn, UserPlus, LogOut } from "lucide-react";
 import React from "react";
 
 function Navbar() {
@@ -78,7 +78,7 @@ function Navbar() {
                   to="/emergency"
                   className="flex items-center space-x-2 px-4 py-2 rounded-md hover:bg-emerald-50 transition-colors"
                 >
-                  <Lightbulb className="h-4 w-4" />
+                  <Siren className="h-4 w-4" />
                   <span>Emergencies</span>
                 </Link>
               </li>
@@ -87,7 +87,7 @@ function Navbar() {
                   to="/regional-planning"
                   className="flex items-center space-x-2 px-4 py-2 rounded-md hover:bg-emerald-50 transition-colors"
                 >
-                  <Lightbulb className="h-4 w-4" />
+                  <Locate className="h-4 w-4" />
                   <span>Regional Planning</span>
                 </Link>
               </li>
