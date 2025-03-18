@@ -34,7 +34,7 @@ const server = http.createServer(app);
 //   credentials: true
 // })); 
 
-app.use(cors({ origin: "https://civic-sphere.vercel.app"}));
+app.use(cors({ origin: "https://civic-sphere.vercel.app", credentials: true }));
 
 app.use(express.json());
 
