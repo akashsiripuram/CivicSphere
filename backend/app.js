@@ -22,31 +22,32 @@ const server = http.createServer(app);
 
 
 // Middleware
-const allowedOrigins = [
-  'http://localhost:5173', 
-  'https://civic-sphere.vercel.app' 
-];
+// const allowedOrigins = [
+//   'http://localhost:5173', 
+//   'https://civic-sphere.vercel.app' 
+// ];
 
-app.use(cors({
-  origin: "*",
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
-})); 
+// app.use(cors({
+//   origin: "*",
+//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//   allowedHeaders: ['Content-Type', 'Authorization'],
+//   credentials: true
+// })); 
 
-// app.use(cors());
+app.use(cors());
 
 app.use(express.json());
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-const io = new Server(server, {
-  cors: {
-    origin: allowedOrigins,
-    methods: ['GET', 'POST'],
-    credentials: true
-  }
-});
+const io = new Server(server);
+// , {
+//   cors: {
+//     origin: allowedOrigins,
+//     methods: ['GET', 'POST'],
+//     credentials: true
+//   }
+// }
 
 // Connect to Database
 connectDb();
