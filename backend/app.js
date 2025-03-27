@@ -41,7 +41,7 @@ const allowedOrigins = [
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://civic-sphere.vercel.app",
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
@@ -59,11 +59,7 @@ app.use(
   })
 );
 
-app.use((req, res, next) => {
-  console.log("Request Origin:", req.headers.origin);
-  console.log("Request Path:", req.path);
-  next();
-});
+
 
 
 const upload = multer({ storage: multer.memoryStorage() });
