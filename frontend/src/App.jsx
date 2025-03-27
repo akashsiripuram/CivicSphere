@@ -21,14 +21,15 @@ function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
   );
-
-  
-
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(checkAuth());
   }, [dispatch]);
+
+  if (isLoading) {
+    return <div>Loading...</div>; // Show a loader until auth check is complete
+  }
   return (
     <>
       <Toaster />

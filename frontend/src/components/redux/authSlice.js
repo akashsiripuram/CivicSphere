@@ -65,10 +65,7 @@ export const checkAuth = createAsyncThunk(
       `${import.meta.env.VITE_BACKEND_URL}/api/auth/check-auth`,
       {
         withCredentials: true,
-        headers: {
-          "Cache-Control":
-            "no-store, no-cache, must-revalidate, proxy-revalidate",
-        },
+        
       }
     );
 

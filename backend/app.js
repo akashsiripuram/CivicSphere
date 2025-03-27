@@ -14,6 +14,8 @@ import locationRouter from "./routes/location.route.js";
 import uploadToS3 from "./utils/AWSUpload.js";
 import chatSocket from "./sockets/chatSocket.js";
 import { Server } from "socket.io";
+import session from "express-session";
+
 
 import emergencyRouter from "./routes/emergency.route.js";
 const app = express();
@@ -22,10 +24,11 @@ const server = http.createServer(app);
 
 
 // Middleware
-// const allowedOrigins = [
-//   'http://localhost:5173', 
-//   'https://civic-sphere.vercel.app' 
-// ];
+const allowedOrigins = [
+  'http://localhost:5173', 
+  'https://civic-sphere.vercel.app' 
+];
+
 
 // app.use(cors({
 //   origin: "*",
@@ -34,9 +37,34 @@ const server = http.createServer(app);
 //   credentials: true
 // })); 
 
-app.use(cors({ origin: "https://civic-sphere.vercel.app", credentials: true }));
+// app.use(cors({ origin: allowedOrigins,allowedHeaders: ['Content-Type', 'Authorization'], credentials: true }));
 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
+
+app.use(cookieParser());
 app.use(express.json());
+app.use(
+  session({
+    secret: process.env.JWT_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false, httpOnly: true }, // Set `secure: true` only in production
+  })
+);
+
+app.use((req, res, next) => {
+  console.log("Request Origin:", req.headers.origin);
+  console.log("Request Path:", req.path);
+  next();
+});
+
 
 const upload = multer({ storage: multer.memoryStorage() });
 
