@@ -38,8 +38,7 @@ const allowedOrigins = [
 
 app.use(
   cors({
-    origin: "https://civic-sphere.vercel.app",
-
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
