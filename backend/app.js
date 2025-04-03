@@ -16,35 +16,30 @@ import chatSocket from "./sockets/chatSocket.js";
 import { Server } from "socket.io";
 import session from "express-session";
 
-
 import emergencyRouter from "./routes/emergency.route.js";
 const app = express();
 const server = http.createServer(app);
 
-
-
 // Middleware
 const allowedOrigins = [
-  'http://localhost:5173', 
-  'https://civic-sphere.vercel.app' 
+  "http://localhost:5173",
+  "https://civic-sphere.vercel.app",
 ];
-
 
 // app.use(cors({
 //   origin: "*",
 //   methods: ['GET', 'POST', 'PUT', 'DELETE'],
 //   allowedHeaders: ['Content-Type', 'Authorization'],
 //   credentials: true
-// })); 
+// }));
 
 // app.use(cors({ origin: allowedOrigins,allowedHeaders: ['Content-Type', 'Authorization'], credentials: true }));
 
 app.use(
   cors({
     origin: "https://civic-sphere.vercel.app",
-    allowedHeaders: ["Content-Type", "Authorization"],
+
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
 
@@ -58,9 +53,6 @@ app.use(
     cookie: { secure: false, httpOnly: true }, // Set `secure: true` only in production
   })
 );
-
-
-
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -78,12 +70,11 @@ connectDb();
 
 // Initialize Chat Socket
 chatSocket(io);
-app.get("/",(req,res)=>{
+app.get("/", (req, res) => {
   res.json({
-    message:"Server is alive"
-  })
-  }
-   );
+    message: "Server is alive",
+  });
+});
 // File Upload Route
 app.post("/api/v1/upload", upload.single("file"), async (req, res) => {
   try {
