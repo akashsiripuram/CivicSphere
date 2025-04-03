@@ -17,6 +17,7 @@ import Donation from "./pages/Donations/Donation";
 import Emergency from "./pages/Emergency/Emergency";
 import RegionalPlanning from "./pages/RegionalPlanning/RegionalPlanning";
 import NotFound from "./pages/NotFound/NotFound";
+import ChatBot from "./pages/Chatbot/Chatbot";
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
@@ -63,6 +64,7 @@ function App() {
         }
         <Route path="*" element={<NotFound/>} />
       </Routes>
+      <ChatBot />
     </>
   );
 }

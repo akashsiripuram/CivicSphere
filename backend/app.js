@@ -6,6 +6,7 @@ import paymentRouter from "./routes/payment.route.js";
 import resourceRouter from "./routes/resource.route.js";
 import connectDb from "./utils/connectDb.js";
 import issueRouter from "./routes/issue.route.js";
+import geminiRouter from "./routes/gemini.route.js";
 import cors from "cors";
 import http from "http";
 import cookieParser from "cookie-parser";
@@ -96,6 +97,7 @@ app.use("/api/resources", resourceRouter);
 app.use("/api/issues", issueRouter);
 app.use("/api/payments", paymentRouter);
 app.use("/api/location", locationRouter);
+app.use("/api/gemini/",geminiRouter);
 import chatRouter from "./routes/chat.route.js"; // ✅ Import chat routes
 app.use("/api/chat", chatRouter);
 // import emergencyRouter from "./routes/emergency.route.js";
