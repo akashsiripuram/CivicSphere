@@ -3,13 +3,16 @@ import Issues from "../models/Issue.js";
 export const reportIssue = async (req, res) => {
   console.log("report");
   try {
-    const { issueType, description, location, images, priority } = req.body;
-    createdBy=req.user.id;
+    const { issueType, description, location,  priority } = req.body;
+    console.log("issues",req.body)
+    let createdBy=req.user.id;
     console.log("Report")
-    const newIssue = new Issues({ createdBy, issueType, description, location, images, priority });
+    const newIssue = new Issues({ createdBy, issueType, description, location, priority });
+    console.log("newIssue",newIssue)
     await newIssue.save();
     res.status(201).json({ message: "Issue reported successfully!", issue: newIssue,success:true });
   } catch (error) {
+    console.error("Error reporting issue:", error);
     res.status(500).json({ success:false,error: "Failed to report issue", details: error.message });
   }
 };

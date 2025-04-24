@@ -11,8 +11,10 @@ export const fetchIssues = createAsyncThunk("/issues", async () => {
  const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/issues/all`);
  return response.data;
 });
-const addIssue=createAsyncThunk("/issues/report", async () => {
-    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/issues/report`);
+export const addIssue=createAsyncThunk("/issues/report", async (formData) => {
+    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/issues/report`,formData,{
+        withCredentials: true, // Ensure authentication
+    });
     return response.data;
 })
 

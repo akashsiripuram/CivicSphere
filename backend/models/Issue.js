@@ -20,7 +20,9 @@ const IssueSchema = new mongoose.Schema(
       type: { type: String, default: "Point" },
       coordinates: { type: [Number], required: true } // [longitude, latitude]
     },
-    images: { type: String }, // Store image URLs
+    images: { type: String,
+      default:"https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.unep.org%2Ftopics%2Fsustainable-development-goals%2Fwhy-do-sustainable-development-goals-matter%2Fgoal-11&psig=AOvVaw2EkoQyv9lC2CnJAxpGfEEw&ust=1745585685064000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCJDhycbb8IwDFQAAAAAdAAAAABAE"
+     }, // Store image URLs
     priority: { 
       type: String, 
       enum: ["Low", "Medium", "High", "Critical"], 
