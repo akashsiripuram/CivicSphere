@@ -23,10 +23,10 @@ export const register=async(req,res)=>{
                 resolve(response);
             });
         });
-        console.log(emailIsValid);
-        if (emailIsValid!=true) {
-            return res.status(400).json({ message: "Email is not valid" });
-        }
+        // console.log(emailIsValid);
+        // if (emailIsValid!=true) {
+        //     return res.status(400).json({ message: "Email is not valid" });
+        // }
         
         
         const hashedPassword=await bcrypt.hash(password,10);
