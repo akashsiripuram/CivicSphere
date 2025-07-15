@@ -22,6 +22,7 @@ import chatRouter from "./routes/chat.route.js"; // ✅ Chat route import
 const app = express();
 const server = http.createServer(app);
 
+app.use(express.json());
 // Middleware
 const allowedOrigins = [
   "http://localhost:5173",
@@ -36,7 +37,6 @@ app.use(
 );
 
 app.use(cookieParser());
-app.use(express.json());
 
 app.use(
   session({
