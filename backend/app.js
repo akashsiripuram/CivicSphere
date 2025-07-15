@@ -16,8 +16,9 @@ import uploadToS3 from "./utils/AWSUpload.js";
 import chatSocket from "./sockets/chatSocket.js";
 import { Server } from "socket.io";
 import session from "express-session";
-
 import emergencyRouter from "./routes/emergency.route.js";
+import chatRouter from "./routes/chat.route.js"; // ✅ Chat route import
+
 const app = express();
 const server = http.createServer(app);
 
@@ -26,15 +27,6 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://civic-sphere.vercel.app",
 ];
-
-// app.use(cors({
-//   origin: "*",
-//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//   allowedHeaders: ['Content-Type', 'Authorization'],
-//   credentials: true
-// }));
-
-// app.use(cors({ origin: allowedOrigins,allowedHeaders: ['Content-Type', 'Authorization'], credentials: true }));
 
 app.use(
   cors({
@@ -45,36 +37,40 @@ app.use(
 
 app.use(cookieParser());
 app.use(express.json());
+
 app.use(
   session({
     secret: process.env.JWT_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false, httpOnly: true }, // Set `secure: true` only in production
+    cookie: { secure: false, httpOnly: true }, // secure: true for HTTPS production
   })
 );
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-const io = new Server(server);
-// , {
-//   cors: {
-//     origin: allowedOrigins,
-//     methods: ['GET', 'POST'],
-//     credentials: true
-//   }
-// }
+// ✅ Configure Socket.IO with CORS
+const io = new Server(server, {
+  cors: {
+    origin: allowedOrigins,
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
 
-// Connect to Database
+// Connect to DB
 connectDb();
 
 // Initialize Chat Socket
 chatSocket(io);
+
+// Test route
 app.get("/", (req, res) => {
   res.json({
     message: "Server is alive",
   });
 });
+
 // File Upload Route
 app.post("/api/v1/upload", upload.single("file"), async (req, res) => {
   try {
@@ -96,12 +92,11 @@ app.use("/api/resources", resourceRouter);
 app.use("/api/issues", issueRouter);
 app.use("/api/payments", paymentRouter);
 app.use("/api/location", locationRouter);
-app.use("/api/gemini/",geminiRouter);
-import chatRouter from "./routes/chat.route.js"; // ✅ Import chat routes
+app.use("/api/gemini", geminiRouter);
 app.use("/api/chat", chatRouter);
-// import emergencyRouter from "./routes/emergency.route.js";
 app.use("/api/emergency", emergencyRouter);
-// Start Server
+
+// Start server
 const PORT = process.env.PORT || 8000;
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
