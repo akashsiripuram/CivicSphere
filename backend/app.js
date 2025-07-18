@@ -29,6 +29,7 @@ const allowedOrigins = [
   "https://civic-sphere.vercel.app",
 ];
 
+app.use(cookieParser());
 app.use(
   cors({
     origin: allowedOrigins,
@@ -36,7 +37,6 @@ app.use(
   })
 );
 
-app.use(cookieParser());
 
 app.use(
   session({
